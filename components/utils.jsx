@@ -36,8 +36,12 @@ function CustomCursor() {
   const ringRef = React.useRef(null);
   const ringPos = React.useRef({ x: -100, y: -100 });
   const [hov, setHov] = React.useState(false);
+  const [enabled, setEnabled] = React.useState(true);
 
   React.useEffect(() => {
+    // Skip custom cursor on touch devices
+    const isTouch = window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if (isTouch) { setEnabled(false); return; }
     let raf;
     const animate = () => {
       ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.12;
@@ -48,15 +52,19 @@ function CustomCursor() {
       raf = requestAnimationFrame(animate);
     };
     raf = requestAnimationFrame(animate);
-    // inject cursor:none while custom cursor is active
+    // inject cursor:none while custom cursor is active — but keep text cursor on text inputs
     const s = document.createElement('style');
-    s.textContent = 'html, a, button, [data-hover] { cursor: none !important; }';
+    s.textContent = `html, body, a, button, [data-hover], [role="button"] { cursor: none !important; }
+      input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="search"], input[type="url"], input:not([type]), textarea, [contenteditable="true"] { cursor: text !important; }`;
     document.head.appendChild(s);
     const move = (e) => {
       pos.current = { x: e.clientX, y: e.clientY };
       if (dotRef.current) dotRef.current.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
     };
-    const over = (e) => setHov(!!e.target.closest('a, button, [data-hover]'));
+    const over = (e) => {
+      const isInput = e.target.closest('input, textarea, select, [contenteditable="true"]');
+      setHov(!isInput && !!e.target.closest('a, button, [data-hover], [role="button"]'));
+    };
     window.addEventListener('mousemove', move, { passive: true });
     window.addEventListener('mouseover', over);
     return () => {
@@ -67,10 +75,11 @@ function CustomCursor() {
     };
   }, []);
 
+  if (!enabled) return null;
   return (
     <>
-      <div ref={dotRef} className="cursor-dot" />
-      <div ref={ringRef} className={`cursor-ring ${hov ? 'cursor-ring-hover' : ''}`} />
+      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
+      <div ref={ringRef} className={`cursor-ring ${hov ? 'cursor-ring-hover' : ''}`} aria-hidden="true" />
     </>
   );
 }

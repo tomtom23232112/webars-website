@@ -1,11 +1,19 @@
 function WebArsFooter({ navigate }) {
   const [email, setEmail] = React.useState('');
   const [sent, setSent] = React.useState(false);
+  const [error, setError] = React.useState('');
   const go = (p) => { navigate(p); window.scrollTo({ top: 0, behavior: 'instant' }); };
 
   const handleNewsletter = (e) => {
     e.preventDefault();
-    if (email) { setSent(true); setEmail(''); }
+    const trimmed = email.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setError('Bitte gültige E-Mail-Adresse eingeben.');
+      return;
+    }
+    setError('');
+    setSent(true);
+    setEmail('');
   };
 
   return (
@@ -16,19 +24,24 @@ function WebArsFooter({ navigate }) {
           {sent ? (
             <p className="footer-nl-thanks">Danke! Du bist dabei.</p>
           ) : (
-            <form className="footer-nl-form" onSubmit={handleNewsletter}>
-              <input
-                type="email"
-                placeholder="deine@email.de"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit">→</button>
-            </form>
+            <>
+              <form className="footer-nl-form" onSubmit={handleNewsletter} noValidate>
+                <input
+                  type="email"
+                  placeholder="deine@email.de"
+                  value={email}
+                  onChange={e => { setEmail(e.target.value); if (error) setError(''); }}
+                  aria-label="E-Mail-Adresse für Newsletter"
+                  aria-invalid={!!error}
+                  required
+                />
+                <button type="submit" aria-label="Newsletter abonnieren">→</button>
+              </form>
+              {error && <p style={{color:'var(--accent)',fontSize:12,marginTop:8}}>{error}</p>}
+            </>
           )}
         </div>
-        <div className="footer-logo-big">WebArs</div>
+        <div className="footer-logo-big" aria-hidden="true">WebArs</div>
       </div>
 
       <div className="footer-mid">
@@ -71,7 +84,7 @@ function WebArsFooter({ navigate }) {
         <div className="footer-designrush">
           <span className="dr-badge">Featured on DesignRush</span>
         </div>
-        <p className="footer-copy">© 2025 WebArs GmbH · webars.at</p>
+        <p className="footer-copy">© {new Date().getFullYear()} WebArs GmbH · webars.at</p>
       </div>
     </footer>
   );

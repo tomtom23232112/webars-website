@@ -215,7 +215,7 @@ function ProjectCard({ project, delay }) {
   );
 }
 
-function ProjectsSection() {
+function ProjectsSection({ navigate }) {
   return (
     <section className="section projects-section" id="projects-section">
       <div className="projects-header">
@@ -229,7 +229,7 @@ function ProjectsSection() {
         {PROJECTS.map((p, i) => <ProjectCard key={p.name} project={p} delay={i * 100} />)}
       </div>
       <Reveal delay={200} style={{textAlign:'center',marginTop:'3rem'}}>
-        <button className="btn-ghost">Alle Projekte ansehen →</button>
+        <button className="btn-ghost" onClick={() => navigate && navigate('contact')}>Alle Projekte ansehen →</button>
       </Reveal>
     </section>
   );
@@ -333,7 +333,7 @@ const PRICING = {
   ],
 };
 
-function PricingSection() {
+function PricingSection({ navigate }) {
   const [tab, setTab] = React.useState('webdesign');
   const plans = PRICING[tab];
   const tabs = [['webdesign','Webdesign'],['ki','KI-Automatisierung'],['seo','SEO-Pakete']];
@@ -360,7 +360,7 @@ function PricingSection() {
               <ul className="pricing-features">
                 {p.features.map(f => <li key={f}><span className="pf-check">✓</span>{f}</li>)}
               </ul>
-              <button className={p.popular ? 'btn-primary' : 'btn-outline'} style={{width:'100%',marginTop:'auto'}}>Anfragen →</button>
+              <button className={p.popular ? 'btn-primary' : 'btn-outline'} style={{width:'100%',marginTop:'auto'}} onClick={() => navigate && navigate('contact')}>Anfragen →</button>
             </div>
           </Reveal>
         ))}
@@ -386,17 +386,27 @@ function FAQSection() {
       <Reveal><p className="section-label">{ '{ FAQ }' }</p></Reveal>
       <Reveal delay={80}><h2 className="section-h2" style={{marginBottom:'3rem'}}>Häufige Fragen.</h2></Reveal>
       <div className="faq-list">
-        {FAQS.map((f, i) => (
-          <Reveal key={i} delay={i * 60}>
-            <div className={`faq-item ${open === i ? 'faq-open' : ''}`}>
-              <button className="faq-q" onClick={() => setOpen(open === i ? null : i)}>
-                <span>{f.q}</span>
-                <span className="faq-icon">{open === i ? '−' : '+'}</span>
-              </button>
-              {open === i && <div className="faq-a">{f.a}</div>}
-            </div>
-          </Reveal>
-        ))}
+        {FAQS.map((f, i) => {
+          const isOpen = open === i;
+          return (
+            <Reveal key={i} delay={i * 60}>
+              <div className={`faq-item ${isOpen ? 'faq-open' : ''}`}>
+                <button
+                  className="faq-q"
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-a-${i}`}
+                >
+                  <span>{f.q}</span>
+                  <span className="faq-icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                </button>
+                <div id={`faq-a-${i}`} className="faq-a-wrap" style={{maxHeight: isOpen ? '400px' : '0', overflow:'hidden', transition:'max-height .4s ease'}}>
+                  <div className="faq-a">{f.a}</div>
+                </div>
+              </div>
+            </Reveal>
+          );
+        })}
       </div>
     </section>
   );
@@ -416,7 +426,6 @@ function ClosingCTA({ navigate }) {
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#cpph)" />
-          <rect width="100%" height="100%" fill="radial-gradient(ellipse at center, rgba(249,69,45,0.1) 0%, transparent 70%)" />
         </svg>
         <div className="closing-glow" />
         <div className="photo-label-inner" style={{fontSize:'11px',opacity:.25}}>Close-up Auge S/W-Photo</div>
@@ -438,7 +447,7 @@ function HomePage({ navigate }) {
       <MarqueeSection />
       <FeaturesSection navigate={navigate} />
       <KISection navigate={navigate} />
-      <ProjectsSection />
+      <ProjectsSection navigate={navigate} />
       <ProcessSection />
       <TestimonialsSection />
       <ComparisonSection />

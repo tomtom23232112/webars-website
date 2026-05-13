@@ -3,9 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebArs® — KI-Automatisierung & Webdesign Wien</title>
+<title>WebArs — KI-Automatisierung &amp; Webdesign aus Wien &amp; Frankfurt</title>
+<meta name="description" content="WebArs automatisiert dein Unternehmen mit KI und baut Websites, die konvertieren. Für ambitionierte KMUs im DACH-Raum. Kostenlose 30-Min Erstberatung.">
+<meta name="keywords" content="KI-Automatisierung, Webdesign Wien, SEO, GEO, Generative Engine Optimization, n8n, Make, ChatGPT, Claude, Framer, Wien, Frankfurt">
+<meta name="author" content="WebArs GmbH">
+<meta name="theme-color" content="#0a0a0a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="WebArs — KI-Automatisierung &amp; Webdesign">
+<meta property="og:description" content="KI-gestützte Unternehmensautomatisierung kombiniert mit modernem Webdesign. Wien · Frankfurt · DACH.">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="WebArs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WebArs — KI-Automatisierung &amp; Webdesign">
+<meta name="twitter:description" content="KI-gestützte Unternehmensautomatisierung kombiniert mit modernem Webdesign.">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://webars.at">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/cloud.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -40,11 +56,23 @@ input, textarea, select { font-family:var(--font-body); }
 ::-webkit-scrollbar-thumb { background:var(--surface2); border-radius:3px; }
 /* ── Custom Cursor ── */
 .cursor-dot { position:fixed; top:0; left:0; width:8px; height:8px; background:var(--accent); border-radius:50%; pointer-events:none; z-index:9999; will-change:transform; }
-.cursor-ring { position:fixed; top:0; left:0; width:32px; height:32px; border:1px solid rgba(24,64,255,0.45); border-radius:50%; pointer-events:none; z-index:9998; will-change:transform; transition:width .2s,height .2s,border-color .2s; }
+.cursor-ring { position:fixed; top:0; left:0; width:32px; height:32px; border:1px solid var(--accent); opacity:.6; border-radius:50%; pointer-events:none; z-index:9998; will-change:transform; transition:width .2s,height .2s,border-color .2s,opacity .2s; }
+.cursor-ring.cursor-ring-hover { opacity:1; }
 .cursor-ring-hover { width:48px; height:48px; border-color:var(--accent); }
 /* ── Reveal ── */
 .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
 .revealed { opacity:1; transform:translateY(0); }
+/* ── Focus states for keyboard navigation ── */
+:focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
+button:focus-visible, a:focus-visible { outline-offset:4px; }
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+  .reveal { opacity:1; transform:none; }
+}
+/* ── Skip link ── */
+.skip-link { position:absolute; left:-9999px; top:8px; background:var(--accent); color:#fff; padding:10px 16px; border-radius:3px; font-size:14px; font-weight:600; z-index:10000; }
+.skip-link:focus { left:8px; }
 /* ── Layout ── */
 .section { padding:100px clamp(24px,6vw,100px); max-width:var(--max-w); margin:0 auto; }
 .body-lg { font-size:clamp(16px,1.4vw,19px); line-height:1.7; color:var(--muted); }
@@ -75,7 +103,7 @@ input, textarea, select { font-family:var(--font-body); }
 .nav-drop button { text-align:left; padding:10px 16px; font-size:14px; color:var(--muted); border-radius:4px; transition:background .15s,color .15s; }
 .nav-drop button:hover { background:var(--surface2); color:var(--text); }
 .btn-nav-cta { background:var(--accent); color:#fff; font-size:13px; font-weight:600; padding:9px 20px; border-radius:3px; white-space:nowrap; transition:background .2s; }
-.btn-nav-cta:hover { background:#e03820; }
+.btn-nav-cta:hover { filter:brightness(.88); box-shadow:0 8px 24px var(--accent-glow); }
 .nav-burger { display:none; flex-direction:column; gap:5px; padding:8px; }
 .nav-burger span { display:block; width:22px; height:1.5px; background:var(--text); transition:transform .3s; }
 /* ── Hero ── */
@@ -244,10 +272,11 @@ input, textarea, select { font-family:var(--font-body); }
 .faq-q:hover { color:var(--accent); }
 .faq-icon { font-size:22px; font-weight:300; color:var(--accent); flex-shrink:0; }
 .faq-a { font-size:15px; color:var(--muted); line-height:1.75; padding:0 0 22px; }
+.faq-q[aria-expanded="true"] .faq-icon { color:var(--accent); }
 /* ── Closing CTA ── */
 .closing-cta { position:relative; min-height:70vh; display:flex; align-items:center; justify-content:center; overflow:hidden; background:var(--bg); border-top:1px solid var(--border); }
 .closing-bg { position:absolute; inset:0; }
-.closing-glow { position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(249,69,45,0.14) 0%, transparent 65%); pointer-events:none; }
+.closing-glow { position:absolute; inset:0; background:radial-gradient(ellipse at center, var(--accent-dim) 0%, transparent 65%); pointer-events:none; }
 .closing-content { position:relative; z-index:2; text-align:center; padding:clamp(40px,6vw,80px); }
 .closing-h { font-family:var(--font-display); font-size:clamp(56px,9vw,130px); line-height:.93; letter-spacing:.01em; text-transform:uppercase; margin-bottom:1.5rem; }
 .closing-sub { font-size:clamp(15px,1.4vw,19px); color:var(--muted); margin-bottom:2.5rem; }
@@ -259,7 +288,7 @@ input, textarea, select { font-family:var(--font-body); }
 .footer-nl-form input { background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:var(--font-body); font-size:14px; padding:11px 16px; border-radius:3px; min-width:260px; outline:none; transition:border-color .2s; }
 .footer-nl-form input:focus { border-color:var(--accent); }
 .footer-nl-form button { background:var(--accent); color:#fff; font-size:18px; padding:11px 18px; border-radius:3px; font-family:var(--font-body); transition:background .2s; }
-.footer-nl-form button:hover { background:#e03820; }
+.footer-nl-form button:hover { filter:brightness(.88); }
 .footer-nl-thanks { color:var(--accent); font-weight:600; font-size:15px; }
 .footer-logo-big { font-family:var(--font-display); font-size:clamp(40px,5vw,72px); color:rgba(255,255,255,0.07); line-height:1; }
 .footer-mid { display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; padding-bottom:48px; border-bottom:1px solid var(--border); margin-bottom:32px; }
@@ -278,6 +307,7 @@ input, textarea, select { font-family:var(--font-body); }
 .footer-copy { font-size:12px; color:rgba(255,255,255,0.25); }
 /* ── Photo Placeholder ── */
 .photo-ph { position:relative; overflow:hidden; border:1px solid var(--border); }
+.photo-ph-label { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:12px; color:rgba(255,255,255,0.25); font-family:monospace; text-align:center; line-height:1.8; padding:1rem; z-index:1; }
 /* ── Hero Workflow Visual ── */
 .hero-visual-area { position:relative; display:flex; align-items:center; justify-content:center; padding:40px 0 40px 20px; }
 .hero-visual-area::before { content:''; position:absolute; left:-40px; top:0; bottom:0; width:80px; background:linear-gradient(to right, var(--bg), transparent); z-index:1; pointer-events:none; }
@@ -292,7 +322,7 @@ input, textarea, select { font-family:var(--font-body); }
 /* ── KI Page visuals ── */
 .ki-hero-visual { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:40px 24px; }
 .ki-node-animate { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.ki-mini-node { background:var(--bg); border:1px solid rgba(249,69,45,0.4); border-radius:6px; padding:14px; font-size:12px; font-weight:600; color:var(--muted); text-align:center; white-space:pre-line; line-height:1.4; animation:nodePulse 3s ease-in-out infinite alternate; }
+.ki-mini-node { background:var(--bg); border:1px solid var(--accent-dim); border-radius:6px; padding:14px; font-size:12px; font-weight:600; color:var(--muted); text-align:center; white-space:pre-line; line-height:1.4; animation:nodePulse 3s ease-in-out infinite alternate; }
 /* ── Browser mock ── */
 .browser-mock { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
 .browser-bar { padding:12px 16px; display:flex; gap:7px; align-items:center; border-bottom:1px solid var(--border); }
@@ -303,7 +333,7 @@ input, textarea, select { font-family:var(--font-body); }
 .tools-grid { display:flex; flex-wrap:wrap; gap:.6rem; }
 .tool-badge { font-size:13px; font-weight:600; padding:8px 18px; border:1px solid var(--border); border-radius:3px; color:var(--muted); letter-spacing:.06em; transition:border-color .2s,color .2s; }
 .tool-badge:hover { border-color:var(--accent); color:var(--text); }
-.tool-badge-ai { border-color:rgba(249,69,45,0.3); color:rgba(249,69,45,0.7); }
+.tool-badge-ai { border-color:var(--accent-dim); color:var(--accent); }
 /* ── GEO Page ── */
 .geo-explain-block { display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,6vw,80px); margin-top:2rem; align-items:start; }
 .geo-explain-text p { font-size:16px; color:var(--muted); line-height:1.8; }
@@ -374,6 +404,9 @@ input, textarea, select { font-family:var(--font-body); }
 @keyframes introTopOut { to{transform:translateY(-100%)} }
 @keyframes introBotOut { to{transform:translateY(100%)} }
 @keyframes introDivOut { to{opacity:0} }
+.intro-skip { display:inline-block; margin-top:1.6rem; background:none; border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.4); font-size:11px; letter-spacing:.2em; text-transform:uppercase; padding:8px 16px; border-radius:3px; opacity:0; transition:opacity .5s ease, border-color .2s, color .2s; cursor:pointer; font-family:var(--font-body); }
+.intro-skip.intro-tagline-in { opacity:1; }
+.intro-skip:hover { border-color:var(--accent); color:var(--accent); }
 /* ── Hero Stats ── */
 .hero-stats { display:flex; gap:clamp(1.2rem,3vw,2.8rem); margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border); flex-wrap:wrap; }
 .hero-stat { display:flex; flex-direction:column; gap:.25rem; }
@@ -388,7 +421,7 @@ input, textarea, select { font-family:var(--font-body); }
 .comp-row:hover { background:var(--surface); }
 .comp-label-col { padding:13px 20px; font-size:14px; font-weight:500; color:var(--muted); }
 .comp-col { padding:13px 16px; font-size:14px; text-align:center; border-left:1px solid var(--border); }
-.comp-col-wa { background:rgba(24,64,255,0.07); }
+.comp-col-wa { background:var(--accent-dim); }
 .comp-val-wa { color:var(--accent); font-weight:700; }
 .comp-val { color:var(--muted); }
 .comp-header .comp-col { font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; }
@@ -441,6 +474,15 @@ input, textarea, select { font-family:var(--font-body); }
   .form-row { grid-template-columns:1fr; }
   .offices-grid { grid-template-columns:1fr; }
   .timeline-item { grid-template-columns:1fr; gap:8px; }
+  .comp-header, .comp-row { grid-template-columns:1.4fr 1fr; }
+  .comp-header .comp-col:not(.comp-col-wa), .comp-row .comp-col:not(.comp-col-wa) { display:none; }
+  .closing-h { font-size:clamp(44px,11vw,80px); }
+  .hero-proof-strip { font-size:11px; gap:.5rem; padding:0 8px; }
+  .section { padding:80px clamp(20px,5vw,40px); }
+  .nav-logo { font-size:22px; }
+  .wa-chat-window { width:calc(100vw - 48px); max-width:340px; }
+  .wa-chat-wrap { bottom:16px; right:16px; }
+}
 /* ── Exit-Intent Popup ── */
 .exit-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9500; display:flex; align-items:center; justify-content:center; padding:24px; backdrop-filter:blur(6px); }
 .exit-overlay.exit-in { animation:exitOverlayIn .32s ease both; }
@@ -465,7 +507,7 @@ input, textarea, select { font-family:var(--font-body); }
 .wa-chat-wrap { position:fixed; bottom:24px; right:24px; z-index:9000; display:flex; flex-direction:column; align-items:flex-end; gap:12px; }
 .wa-chat-toggle { width:54px; height:54px; border-radius:50%; background:var(--accent); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 32px var(--accent-glow); transition:transform .2s,box-shadow .2s; position:relative; }
 .wa-chat-toggle:hover { transform:scale(1.08); box-shadow:0 12px 40px var(--accent-glow); }
-.wa-chat-badge { position:absolute; top:0; right:0; width:12px; height:12px; background:#f9452d; border-radius:50%; border:2px solid var(--bg); animation:pulse 2s ease-in-out infinite; }
+.wa-chat-badge { position:absolute; top:0; right:0; width:12px; height:12px; background:var(--accent); border-radius:50%; border:2px solid var(--bg); animation:pulse 2s ease-in-out infinite; }
 .wa-chat-window { width:340px; height:500px; background:var(--surface); border:1px solid var(--border); border-radius:16px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.7); animation:chatWindowIn .28s cubic-bezier(.16,1,.3,1); }
 @keyframes chatWindowIn { from{opacity:0;transform:translateY(12px) scale(.97)} to{opacity:1;transform:none} }
 .wa-chat-header { padding:14px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; background:var(--surface); }
@@ -491,7 +533,7 @@ input, textarea, select { font-family:var(--font-body); }
 .wa-chat-input { flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); font-size:13.5px; padding:9px 12px; border-radius:10px; outline:none; resize:none; font-family:var(--font-body); line-height:1.5; max-height:100px; transition:border-color .2s; }
 .wa-chat-input:focus { border-color:var(--accent); }
 .wa-chat-send { width:34px; height:34px; border-radius:50%; background:var(--accent); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .2s,transform .15s; }
-.wa-chat-send:hover:not(:disabled) { background:#1035e0; transform:scale(1.05); }
+.wa-chat-send:hover:not(:disabled) { filter:brightness(.88); transform:scale(1.05); }
 .wa-chat-send:disabled { opacity:.4; cursor:default; }
 .wa-chat-footer { text-align:center; font-size:10px; color:rgba(255,255,255,0.2); padding:6px 12px 10px; }
 </style>
@@ -517,7 +559,13 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 function IntroOverlay({ onDone }) {
   const [phase, setPhase] = React.useState(0);
   const letters = ['W','e','b','A','r','s'];
+  const skip = React.useCallback(() => { setPhase(4); setTimeout(onDone, 600); }, [onDone]);
+
   React.useEffect(() => {
+    // Respect prefers-reduced-motion: skip intro entirely
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { onDone(); return; }
+
     const timers = [
       setTimeout(() => setPhase(1), 110),
       setTimeout(() => setPhase(2), 460),
@@ -525,11 +573,13 @@ function IntroOverlay({ onDone }) {
       setTimeout(() => setPhase(4), 1980),
       setTimeout(onDone, 2820),
     ];
-    return () => timers.forEach(clearTimeout);
-  }, [onDone]);
+    const onKey = (e) => { if (e.key === 'Escape' || e.key === 'Enter') skip(); };
+    window.addEventListener('keydown', onKey);
+    return () => { timers.forEach(clearTimeout); window.removeEventListener('keydown', onKey); };
+  }, [onDone, skip]);
   const ex = phase >= 4;
   return (
-    <>
+    <div onClick={skip} role="button" aria-label="Intro überspringen" tabIndex={0} style={{position:'fixed',inset:0,zIndex:9990,cursor:'pointer'}}>
       <div className={`intro-panel intro-top${ex ? ' intro-top-exit' : ''}`}>
         <div style={{textAlign:'center'}}>
           <div className="intro-letters">
@@ -542,12 +592,15 @@ function IntroOverlay({ onDone }) {
         </div>
       </div>
       <div className={`intro-panel intro-bot${ex ? ' intro-bot-exit' : ''}`}>
-        <p className={`intro-tagline${phase >= 3 ? ' intro-tagline-in' : ''}`}>
-          KI-Automatisierung &nbsp;·&nbsp; Webdesign &nbsp;·&nbsp; Wien &amp; Frankfurt
-        </p>
+        <div style={{textAlign:'center'}}>
+          <p className={`intro-tagline${phase >= 3 ? ' intro-tagline-in' : ''}`}>
+            KI-Automatisierung &nbsp;·&nbsp; Webdesign &nbsp;·&nbsp; Wien &amp; Frankfurt
+          </p>
+          <button className={`intro-skip${phase >= 3 ? ' intro-tagline-in' : ''}`} onClick={(e) => { e.stopPropagation(); skip(); }}>Überspringen ✕</button>
+        </div>
       </div>
       <div className={`intro-divider${ex ? ' intro-div-exit' : ''}`} />
-    </>
+    </div>
   );
 }
 
@@ -587,13 +640,14 @@ function App() {
 
   return (
     <div>
+      <a href="#main-content" className="skip-link">Zum Hauptinhalt springen</a>
       {showIntro && <IntroOverlay onDone={() => setShowIntro(false)} />}
       {tweaks.cursorEnabled && <CustomCursor />}
       <ExitIntentPopup onContact={() => navigate('contact')} />
       <WebArsChat />
       <WebArsNav currentPage={page} navigate={navigate} />
 
-      <div key={page} style={{animation:'pageIn .4s ease'}}>
+      <div key={page} id="main-content" style={{animation:'pageIn .4s ease'}}>
         {page === 'home' && <HomePage navigate={navigate} />}
         {page === 'ki' && <KIPage navigate={navigate} />}
         {page === 'webdesign' && <WebdesignPage navigate={navigate} />}
