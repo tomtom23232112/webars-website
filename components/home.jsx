@@ -31,7 +31,7 @@ function HeroSection({ navigate }) {
           <span className={`hero-line hero-line-accent ${linesIn >= 2 ? 'line-in' : ''} ${!glitchDone ? 'glitch-active' : ''}`} data-text="Automatisiert.">Automatisiert.</span>
           <span className={`hero-line ${linesIn >= 3 ? 'line-in' : ''}`}>Skaliert.</span>
         </h1>
-        <p className="hero-sub">Wir automatisieren wiederkehrende Aufgaben in deinem Unternehmen und bauen Websites, die wirklich Kunden bringen. Aus Wien & Frankfurt. Für den deutschsprachigen Raum.</p>
+        <p className="hero-sub">Wir automatisieren wiederkehrende Aufgaben in deinem Unternehmen und bauen Websites, die wirklich Kunden bringen. Aus Wien & Frankfurt. Für den deutschsprachigen Raum.</p>
         <div className="hero-ctas" style={{justifyContent:'center',marginTop:'2.5rem'}}>
           <button className="btn-primary btn-xl hero-btn-primary" onClick={() => navigate('contact')}>Jetzt kostenlos beraten lassen →</button>
           <button className="btn-ghost btn-xl hero-btn-ghost" onClick={() => { const el=document.getElementById('ki-section'); if(el) window.scrollTo({top:el.offsetTop-80,behavior:'smooth'}); }}>Mehr erfahren</button>
@@ -255,75 +255,87 @@ function TestimonialsSection() {
   );
 }
 
-// ─── Pricing ──────────────────────────────────────────────────────────────────
-const PRICING = {
-  webdesign: [
-    { tier:'Starter', price:'1.250', note:'Festpreis ohne versteckte Kosten', desc:'Perfekt für Einzelunternehmer & kleine Firmen.', features:['Bis zu 5 Seiten','Framer-basiert','Mobile-optimiert','SEO-Grundlagen','2 Revisionsrunden'], popular:false },
-    { tier:'Business', price:'3.000', note:'Festpreis ohne versteckte Kosten', desc:'Für wachsende Unternehmen mit Conversion-Ziel.', features:['Bis zu 12 Seiten','Individuelle Animationen','Blog / CMS','A/B Testing Setup','Conversion-Optimierung','4 Revisionsrunden'], popular:true },
-    { tier:'Premium', price:'6.500', note:'Festpreis ohne versteckte Kosten', desc:'Volle Leistung — Branding bis Automation.', features:['Unbegrenzt Seiten','Brand Identity System','KI-Chatbot inklusive','SEO & GEO inklusive','Priority Support','Laufende Betreuung'], popular:false },
-  ],
-  ki: [
-    { tier:'Starter', price:'990', note:'Monatlich kündbar', desc:'Erster KI-Workflow für dein Unternehmen.', features:['1 automatisierter Workflow','n8n oder Make','CRM-Integration','2 Wochen Betreuung','Dokumentation'], popular:false },
-    { tier:'Business', price:'2.800', note:'Monatlich kündbar', desc:'Vollständige Automatisierung deines Lead-Prozesses.', features:['Bis zu 5 Workflows','Lead-Qualifizierung','E-Mail-Automatisierung','CRM + Slack','Reporting Dashboard','Monatliches Review'], popular:true },
-    { tier:'Premium', price:'5.500', note:'Monatlich kündbar', desc:'KI-First Unternehmen — end-to-end.', features:['Unbegrenzte Workflows','Custom KI-Modell','Chatbot + Voicebot','Vollständige Integration','24h Support SLA','Quartals-Strategy'], popular:false },
-  ],
-  seo: [
-    { tier:'Starter', price:'490 /mo', note:'Erste Ergebnisse in 4 Wochen oder Geld zurück', desc:'Sichtbarkeit aufbauen — nachhaltig und messbar.', features:['Keyword-Recherche','OnPage-Optimierung','Monthly Report','Local SEO'], popular:false },
-    { tier:'Business', price:'1.200 /mo', note:'Erste Ergebnisse in 4 Wochen oder Geld zurück', desc:'Organisches Wachstum als verlässlicher Kanal.', features:['Content-Strategie','Backlink-Building','Technical SEO','Google Search Console','Wöchentlicher Report'], popular:true },
-    { tier:'Premium', price:'2.400 /mo', note:'Erste Ergebnisse in 4 Wochen oder Geld zurück', desc:'Marktführerschaft durch Sichtbarkeit.', features:['Alles aus Business','GEO inklusive','Dedizierter SEO Manager','Priority Indexing','KI-Suchen Optimierung'], popular:false },
-  ],
-};
-
-function PricingSection({ navigate }) {
-  const [tab, setTab] = React.useState('webdesign');
-  const plans = PRICING[tab];
-  const tabs = [['webdesign','Webdesign'],['ki','KI-Automatisierung'],['seo','SEO-Pakete']];
-
+// ─── Offer Process ────────────────────────────────────────────────────────────
+function OfferProcessSection({ navigate }) {
   React.useEffect(() => {
-    if (document.getElementById('wa-pricing-styles')) return;
+    if (document.getElementById('wa-offer-styles')) return;
     const s = document.createElement('style');
-    s.id = 'wa-pricing-styles';
+    s.id = 'wa-offer-styles';
     s.textContent = `
-      .pricing-note{font-size:11px;color:var(--muted);text-align:center;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:.35rem}
-      .pricing-note-check{color:#4ade80;font-weight:700}
-      .btn-link{background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--font-body);font-size:14px;text-decoration:underline;text-underline-offset:3px;transition:color .2s;padding:0}
-      .btn-link:hover{color:var(--text)}
+      .offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:900px;margin:3rem auto 0}
+      @media(max-width:640px){.offer-grid{grid-template-columns:1fr}}
+      .offer-card{border:1px solid var(--border);border-radius:14px;padding:2rem 2rem 1.75rem;position:relative;background:var(--surface);transition:border-color .3s,transform .35s;overflow:hidden}
+      .offer-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+      .offer-card.offer-highlight{border-color:var(--accent);background:linear-gradient(135deg,rgba(24,64,255,.07) 0%,var(--surface) 100%)}
+      .offer-step-num{font-family:var(--font-display);font-size:88px;line-height:1;color:var(--accent);opacity:.12;position:absolute;bottom:-.5rem;right:1rem;pointer-events:none;user-select:none;transition:opacity .3s}
+      .offer-card:hover .offer-step-num,.offer-card.offer-highlight .offer-step-num{opacity:.28}
+      .offer-step-tag{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.85rem;font-family:var(--font-head);font-weight:700}
+      .offer-step-title{font-family:var(--font-head);font-size:21px;font-weight:800;margin:0 0 .65rem;color:var(--text)}
+      .offer-step-desc{font-size:15px;color:var(--muted);line-height:1.7;margin:0;position:relative;z-index:1}
+      .offer-highlight .offer-step-tag{color:#fff;background:var(--accent);padding:2px 8px;border-radius:4px;letter-spacing:.08em}
+      .offer-cta-block{text-align:center;margin-top:3.5rem}
+      .offer-cta-note{font-size:13px;color:var(--muted);margin-top:1rem;letter-spacing:.02em}
     `;
     document.head.appendChild(s);
   }, []);
 
+  const steps = [
+    {
+      num: '01',
+      tag: 'Schritt 1',
+      title: 'Erstgespräch',
+      desc: '30 Minuten, kostenlos und unverbindlich. Wir lernen dein Unternehmen kennen — kein Pitch, keine Verpflichtung.',
+      highlight: false,
+    },
+    {
+      num: '02',
+      tag: 'Schritt 2',
+      title: 'Analyse',
+      desc: 'Wir analysieren dein Potenzial, deine Mitbewerber und die optimale Strategie — bevor wir auch nur eine Zahl nennen.',
+      highlight: false,
+    },
+    {
+      num: '03',
+      tag: 'Schritt 3',
+      title: 'Dein Angebot',
+      desc: 'Du bekommst ein maßgeschneidertes Angebot — transparent, fair, ohne versteckte Kosten. Erst hier sprechen wir über Zahlen.',
+      highlight: true,
+    },
+    {
+      num: '04',
+      tag: 'Schritt 4',
+      title: 'Umsetzung',
+      desc: 'Sobald du grünes Licht gibst, legen wir los. Schnell, strukturiert, messbar — mit festen Meilensteinen und direktem Kontakt.',
+      highlight: false,
+    },
+  ];
+
   return (
-    <section className="section pricing-section">
-      <Reveal><p className="section-label">{ '{ Preise }' }</p></Reveal>
-      <Reveal delay={80}><h2 className="section-h2">Transparent.<br/>Kein Kleingedrucktes.</h2></Reveal>
-      <Reveal delay={160}>
-        <div className="pricing-tabs">
-          {tabs.map(([k,l]) => (
-            <button key={k} className={`pricing-tab ${tab===k?'tab-active':''}`} onClick={() => setTab(k)}>{l}</button>
-          ))}
-        </div>
+    <section className="section">
+      <Reveal><p className="section-label">{ '{ Wie läuft es ab? }' }</p></Reveal>
+      <Reveal delay={80}><h2 className="section-h2">Erst das Gespräch.<br/>Dann der Preis.</h2></Reveal>
+      <Reveal delay={150}>
+        <p className="body-lg" style={{color:'var(--muted)',textAlign:'center',maxWidth:'560px',margin:'0 auto'}}>
+          Kein Fixpreis von der Stange. Jedes Projekt ist anders — deshalb bekommst du ein Angebot, das wirklich zu dir passt.
+        </p>
       </Reveal>
-      <div className="pricing-grid">
-        {plans.map((p,i) => (
-          <Reveal key={p.tier} delay={i*120} className="pricing-card-wrap">
-            <div className={`pricing-card ${p.popular?'pricing-popular':''}`}>
-              {p.popular && <div className="popular-badge">Am beliebtesten</div>}
-              <div className="pricing-tier">{p.tier}</div>
-              <div className="pricing-price">Ab €{p.price}</div>
-              <p className="pricing-desc">{p.desc}</p>
-              <ul className="pricing-features">
-                {p.features.map(f => <li key={f}><span className="pf-check">✓</span>{f}</li>)}
-              </ul>
-              {p.note && <p className="pricing-note"><span className="pricing-note-check">✓</span>{p.note}</p>}
-              <button className={p.popular?'btn-primary':'btn-outline'} style={{width:'100%',marginTop:'1rem'}} onClick={() => navigate && navigate('contact')}>Anfragen →</button>
+      <div className="offer-grid">
+        {steps.map((step, i) => (
+          <Reveal key={step.num} delay={220 + i * 100}>
+            <div className={`offer-card${step.highlight ? ' offer-highlight' : ''}`}>
+              <span className="offer-step-num">{step.num}</span>
+              <p className="offer-step-tag">{step.tag}</p>
+              <h3 className="offer-step-title">{step.title}</h3>
+              <p className="offer-step-desc">{step.desc}</p>
             </div>
           </Reveal>
         ))}
       </div>
-      <Reveal delay={200} style={{textAlign:'center',marginTop:'2.5rem'}}>
-        <button className="btn-link" onClick={() => navigate && navigate('contact')}>
-          Nicht das richtige dabei? Individuelles Angebot anfordern →
-        </button>
+      <Reveal delay={560}>
+        <div className="offer-cta-block">
+          <button className="btn-primary btn-xl" onClick={() => navigate('contact')}>Kostenloses Erstgespräch buchen →</button>
+          <p className="offer-cta-note">Kostenlos · Unverbindlich · Antwort innerhalb 24h</p>
+        </div>
       </Reveal>
     </section>
   );
@@ -335,10 +347,10 @@ const FAQS = [
   { q:'Welche KI-Tools setzt WebArs ein?', a:'Wir arbeiten mit n8n, Make (ex-Integromat), dem OpenAI/Claude API, Zapier, und bauen individuelle Integrationen für HubSpot, Notion, Slack, Pipedrive und weitere Tools.' },
   { q:'Wie lange dauert die Umsetzung?', a:'Eine Standard-Website liefern wir in 2–3 Wochen. KI-Workflows sind je nach Komplexität in 1–4 Wochen live. Wir sind schnell — kein bürokratischer Overhead.' },
   { q:'Arbeitet ihr mit kleinen Unternehmen?', a:'Ja. Unsere Zielgruppe sind ambitionierte KMUs im DACH-Raum. Groß denken, schlank umsetzen — das ist unser Ansatz.' },
-  { q:'Gibt es laufende Betreuung nach dem Launch?', a:'Abhängig vom Paket. Business und Premium beinhalten laufendes Monitoring, Optimierung und Support. Starter-Pakete können jederzeit erweitert werden.' },
+  { q:'Gibt es laufende Betreuung nach dem Launch?', a:'Ja, abhängig vom Leistungsumfang. Wir bieten laufendes Monitoring, Optimierung und Support — je nach Bedarf monatlich oder projektbasiert.' },
   { q:'Was ist der Unterschied zwischen SEO und GEO?', a:'SEO optimiert für klassische Suchmaschinen wie Google. GEO (Generative Engine Optimization) sorgt dafür, dass dein Unternehmen von KI-Systemen wie ChatGPT, Perplexity und Claude empfohlen wird.' },
   { q:'Was passiert, wenn ich nicht zufrieden bin?', a:'Wir arbeiten mit transparenten Meilensteinen. Bei jedem Schritt entscheidest du, ob wir weitermachen. Nach 14 Tagen gibst du uns ehrliches Feedback — wenn es nicht passt, gehen wir auseinander, kein Drama.' },
-  { q:'Bindet ihr mich an einen langfristigen Vertrag?', a:'Nein. Webdesign-Projekte sind Einmalleistungen. KI-Automatisierung und SEO sind monatlich kündbar. Du bist nie länger als einen Monat gebunden.' },
+  { q:'Bindet ihr mich an einen langfristigen Vertrag?', a:'Nein. Webdesign-Projekte sind Einmalleistungen. KI-Automatisierung und SEO laufen monatlich — du bist nie länger als einen Monat gebunden.' },
   { q:'Kann ich die Website später selbst pflegen?', a:'Ja. Wir übergeben die Website mit einer kurzen Einführung. Du kannst Texte, Bilder und Inhalte selbst ändern. Komplexere Änderungen übernehmen wir auf Wunsch.' },
 ];
 
@@ -411,10 +423,10 @@ function ClosingCTA({ navigate }) {
         <Reveal delay={320}>
           <div className="cta-dual-btns">
             <button className="btn-primary btn-xl" onClick={() => navigate('contact')}>Termin buchen →</button>
-            <a href="tel:+436703061078" className="btn-ghost btn-xl">+43 670 3061078</a>
+            <a href="tel:+436703061078" className="btn-ghost btn-xl">+43 670 3061078</a>
           </div>
         </Reveal>
-        <Reveal delay={420}><p className="cta-microcopy">Bereits über 50 Unternehmen vertrauen WebArs · ★ 4.9/5 Trustpilot</p></Reveal>
+        <Reveal delay={420}><p className="cta-microcopy">Bereits über 50 Unternehmen vertrauen WebArs · ★ 4.9/5 Trustpilot</p></Reveal>
       </div>
     </section>
   );
@@ -469,7 +481,7 @@ function HomePage({ navigate }) {
       <ProcessSection />
       <TestimonialsSection />
       <ComparisonSection />
-      <PricingSection navigate={navigate} />
+      <OfferProcessSection navigate={navigate} />
       <FAQSection />
       <ClosingCTA navigate={navigate} />
     </main>
