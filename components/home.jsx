@@ -414,10 +414,44 @@ function FAQSection() {
 
 // ─── Closing CTA ──────────────────────────────────────────────────────────────
 function ClosingCTA({ navigate }) {
+  React.useEffect(() => {
+    if (document.getElementById('wa-cta-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'wa-cta-styles';
+    s.textContent = `
+      .cta-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(70px)}
+      .cta-orb-1{width:420px;height:420px;left:-140px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(249,69,45,.28) 0%,transparent 70%);animation:ctaOrb 9s ease-in-out infinite alternate}
+      .cta-orb-2{width:380px;height:380px;right:-120px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(249,69,45,.18) 0%,transparent 70%);animation:ctaOrb 11s ease-in-out infinite alternate-reverse}
+      .cta-orb-3{width:220px;height:220px;left:50%;top:-80px;transform:translateX(-50%);background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 70%);animation:ctaOrb3 7s ease-in-out infinite alternate}
+      @keyframes ctaOrb{0%{transform:translateY(-50%) scale(1)}100%{transform:translateY(calc(-50% - 35px)) scale(1.18)}}
+      @keyframes ctaOrb3{0%{opacity:.5;transform:translateX(-50%) scale(1)}100%{opacity:1;transform:translateX(-50%) scale(1.25)}}
+      .closing-glow{animation:glowPulse 5s ease-in-out infinite alternate}
+      @keyframes glowPulse{0%{opacity:.4;transform:scale(1) translateX(-50%)}100%{opacity:.9;transform:scale(1.15) translateX(-44%)}}
+      .cta-cloud-top{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:600px;height:130px;background:url('assets/cloud.png') center/contain no-repeat;opacity:.18;animation:ctaCloudDrift 14s ease-in-out infinite alternate;pointer-events:none;z-index:0}
+      .cta-cloud-mid-l{position:absolute;left:-80px;top:30%;width:360px;height:100px;background:url('assets/cloud.png') center/contain no-repeat;opacity:.22;animation:ctaCloudDrift 10s ease-in-out infinite alternate-reverse;pointer-events:none;z-index:0}
+      .cta-cloud-mid-r{position:absolute;right:-80px;top:55%;width:360px;height:100px;background:url('assets/cloud.png') center/contain no-repeat;transform:scaleX(-1);opacity:.22;animation:ctaCloudDrift 12s ease-in-out infinite alternate;pointer-events:none;z-index:0}
+      @keyframes ctaCloudDrift{0%{transform:translateX(0) translateY(0)}100%{transform:translateX(0) translateY(-22px)}}
+      .cta-cloud-mid-r{animation-name:ctaCloudDriftR}
+      @keyframes ctaCloudDriftR{0%{transform:scaleX(-1) translateY(0)}100%{transform:scaleX(-1) translateY(-22px)}}
+    `;
+    document.head.appendChild(s);
+  }, []);
+
   return (
-    <section className="closing-cta">
-      <CloudAccent side="left"  bottom="-40px" opacity={0.5} scale={1.0} />
-      <CloudAccent side="right" bottom="-40px" opacity={0.5} scale={1.0} />
+    <section className="closing-cta" style={{overflow:'hidden'}}>
+      {/* Coloured ambient orbs */}
+      <div className="cta-orb cta-orb-1" />
+      <div className="cta-orb cta-orb-2" />
+      <div className="cta-orb cta-orb-3" />
+      {/* Drifting clouds */}
+      <div className="cta-cloud-top" />
+      <div className="cta-cloud-mid-l" />
+      <div className="cta-cloud-mid-r" />
+      <CloudAccent side="left"  top="10%" opacity={0.35} scale={1.2} />
+      <CloudAccent side="right" top="10%" opacity={0.35} scale={1.2} />
+      <CloudAccent side="left"  bottom="-10px" opacity={0.25} scale={0.85} />
+      <CloudAccent side="right" bottom="-10px" opacity={0.25} scale={0.85} />
+
       <div className="closing-bg">
         <svg width="100%" height="100%" style={{position:'absolute',inset:0}}>
           <defs>
@@ -428,8 +462,8 @@ function ClosingCTA({ navigate }) {
           <rect width="100%" height="100%" fill="url(#cpph)" />
         </svg>
         <div className="closing-glow" />
-        <div className="photo-label-inner" style={{fontSize:'11px',opacity:.25}}>Close-up Auge S/W-Photo</div>
       </div>
+
       <div className="closing-content">
         <Reveal><h2 className="closing-h">Bereit, smarter<br/>zu wachsen?</h2></Reveal>
         <Reveal delay={150}><p className="closing-sub">Kostenloses Erstgespräch — 30 Minuten, kein Pitch, nur Klarheit.</p></Reveal>

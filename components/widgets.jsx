@@ -2,6 +2,27 @@
 function ExitIntentPopup({ onContact }) {
   const [show, setShow] = React.useState(false);
   const [closing, setClosing] = React.useState(false);
+  const [step, setStep] = React.useState('form');
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [emailErr, setEmailErr] = React.useState('');
+  const [sending, setSending] = React.useState(false);
+
+  React.useEffect(() => {
+    if (document.getElementById('wa-popup-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'wa-popup-styles';
+    s.textContent = `
+      .exit-form{display:flex;flex-direction:column;gap:.75rem;width:100%;margin-top:1.25rem}
+      .exit-form-input{background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.75rem 1rem;color:#fff;font-family:inherit;font-size:15px;outline:none;transition:border-color .2s;width:100%;box-sizing:border-box}
+      .exit-form-input:focus{border-color:var(--accent)}
+      .exit-form-input-err{border-color:#ff4444!important}
+      .exit-form-err{color:#ff6b6b;font-size:12px;margin-top:2px}
+      .exit-form-success{text-align:center;padding:1.5rem 0 1rem}
+      .exit-success-icon{width:56px;height:56px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;margin:0 auto 1rem;line-height:1}
+    `;
+    document.head.appendChild(s);
+  }, []);
 
   React.useEffect(() => {
     if (sessionStorage.getItem('wa_exit_shown')) return;
@@ -14,16 +35,13 @@ function ExitIntentPopup({ onContact }) {
       setShow(true);
     };
 
-    // Exit-intent: Maus Richtung Tab-Leiste
     const onMouseLeave = (e) => {
       if (e.clientY > 16) return;
-      if (Date.now() - startTime < 30000) return; // erst nach 30s
+      if (Date.now() - startTime < 30000) return;
       showPopup();
     };
 
-    // Fallback: nach 1,5 Minuten automatisch zeigen
     const timer = setTimeout(showPopup, 90000);
-
     document.addEventListener('mouseleave', onMouseLeave);
     return () => {
       document.removeEventListener('mouseleave', onMouseLeave);
@@ -35,6 +53,20 @@ function ExitIntentPopup({ onContact }) {
     sessionStorage.setItem('wa_exit_shown', '1');
     setClosing(true);
     setTimeout(() => { setShow(false); setClosing(false); }, 320);
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailOk) { setEmailErr('Bitte gib eine gültige E-Mail ein.'); return; }
+    setEmailErr('');
+    setSending(true);
+    // Replace with real endpoint when ready
+    setTimeout(() => {
+      setSending(false);
+      setStep('success');
+      sessionStorage.setItem('wa_exit_shown', '1');
+    }, 900);
   };
 
   if (!show) return null;
@@ -51,22 +83,62 @@ function ExitIntentPopup({ onContact }) {
         style={{ margin: 'auto' }}
       >
         <div className="exit-accent-bar" />
-        <div className="exit-tag">Kostenloses Angebot</div>
-        <h2 className="exit-h">Warte kurz —</h2>
-        <p className="exit-sub">
-          Hol dir ein kostenloses <strong>30-Minuten-Website-Audit</strong>.<br />
-          Wir zeigen dir konkret, wie du mit KI-Automatisierung<br />und Webdesign schneller wächst.
-        </p>
-        <div className="exit-ctas">
-          <button
-            className="btn-primary btn-xl exit-btn-yes"
-            onClick={() => { close(); if (onContact) onContact(); }}
-          >
-            Jetzt buchen →
-          </button>
-          <button className="exit-btn-no" onClick={close}>Nein danke, ich wachse lieber langsam.</button>
-        </div>
         <button className="exit-close" onClick={close} aria-label="Schließen">×</button>
+
+        {step === 'form' ? (
+          <>
+            <div className="exit-tag">Kostenloses Angebot</div>
+            <h2 className="exit-h">Warte kurz —</h2>
+            <p className="exit-sub">
+              Hol dir ein kostenloses <strong>30-Minuten-Website-Audit</strong>.<br />
+              Wir zeigen dir konkret, wie du mit KI&#8209;Automatisierung und Webdesign schneller wächst.
+            </p>
+            <form className="exit-form" onSubmit={submit}>
+              <input
+                className="exit-form-input"
+                type="text"
+                placeholder="Dein Name"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required
+              />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <input
+                  className={`exit-form-input${emailErr ? ' exit-form-input-err' : ''}`}
+                  type="email"
+                  placeholder="Deine E-Mail-Adresse"
+                  value={email}
+                  onChange={e => { setEmail(e.target.value); if (emailErr) setEmailErr(''); }}
+                  required
+                />
+                {emailErr && <span className="exit-form-err">{emailErr}</span>}
+              </div>
+              <button
+                type="submit"
+                className="btn-primary btn-xl exit-btn-yes"
+                disabled={sending}
+                style={{ opacity: sending ? .7 : 1 }}
+              >
+                {sending ? 'Wird gesendet…' : 'Kostenlos anfragen →'}
+              </button>
+            </form>
+            <button className="exit-btn-no" onClick={close} style={{ marginTop: '.75rem' }}>
+              Nein danke, ich wachse lieber langsam.
+            </button>
+          </>
+        ) : (
+          <div className="exit-form-success">
+            <div className="exit-success-icon">✓</div>
+            <h2 className="exit-h" style={{ fontSize: '1.6rem' }}>Danke, {name || 'schön'}!</h2>
+            <p className="exit-sub">
+              Wir melden uns innerhalb von 24&#8239;h bei dir.<br />
+              Schau auch mal in den Spam&#8209;Ordner.
+            </p>
+            <button className="btn-ghost" style={{ marginTop: '1.5rem' }} onClick={close}>
+              Schließen
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -108,14 +180,12 @@ function WebArsChat() {
   const [hasNew, setHasNew]   = React.useState(false);
   const listRef = React.useRef(null);
 
-  // Scroll to bottom when messages change
   React.useEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
   }, [msgs, loading]);
 
-  // Bubble notification after delay if chat not opened
   React.useEffect(() => {
     const t = setTimeout(() => { if (!open) setHasNew(true); }, 12000);
     return () => clearTimeout(t);
@@ -152,7 +222,6 @@ function WebArsChat() {
 
   return (
     <div className="wa-chat-wrap">
-      {/* Chat window */}
       {open && (
         <div className="wa-chat-window">
           <div className="wa-chat-header">
@@ -198,7 +267,6 @@ function WebArsChat() {
         </div>
       )}
 
-      {/* Toggle button */}
       <button className="wa-chat-toggle" onClick={toggleOpen} aria-label="Chat öffnen">
         {open ? (
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
