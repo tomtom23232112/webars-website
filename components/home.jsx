@@ -4,6 +4,13 @@ function HeroSection({ navigate }) {
   const [linesIn, setLinesIn] = React.useState(0);
 
   React.useEffect(() => {
+    // Global layout system
+    if (!document.getElementById('wa-global-layout')) {
+      const g = document.createElement('style');
+      g.id = 'wa-global-layout';
+      g.textContent = `p.section-label{margin-bottom:1rem}`;
+      document.head.appendChild(g);
+    }
     const timers = [
       setTimeout(() => setLinesIn(1), 200),
       setTimeout(() => setLinesIn(2), 600),
@@ -42,7 +49,7 @@ function HeroSection({ navigate }) {
   );
 }
 
-// ─── Trust Logos ─────────────────────────────────────────────────────────────────
+// ─── Trust Logos (CENTER) ─────────────────────────────────────────────────────────
 function TrustLogoSection() {
   React.useEffect(() => {
     if (document.getElementById('wa-trust-styles')) return;
@@ -91,7 +98,7 @@ function MarqueeSection() {
   );
 }
 
-// ─── Features ────────────────────────────────────────────────────────────────
+// ─── Features (LEFT) ────────────────────────────────────────────────────────────
 function FeaturesSection({ navigate }) {
   const cards = [
     { num:'01', title:'KI-Automatisierung', desc:'Wir automatisieren repetitive Prozesse — von Lead-Erfassung bis Onboarding. Mit n8n, Make und ChatGPT-Integrationen.', page:'ki' },
@@ -101,7 +108,7 @@ function FeaturesSection({ navigate }) {
   return (
     <section className="section features-section">
       <Reveal><p className="section-label">{ '{ Was wir machen }' }</p></Reveal>
-      <Reveal delay={100}><h2 className="section-h2">Drei Hebel.<br/>Ein Ziel: Dein Wachstum.</h2></Reveal>
+      <Reveal delay={80}><h2 className="section-h2" style={{marginBottom:'3rem'}}>Drei Hebel.<br/>Ein Ziel: Dein Wachstum.</h2></Reveal>
       <div className="features-grid">
         {cards.map((c, i) => (
           <Reveal key={c.num} delay={i * 120} className="feature-card-wrap">
@@ -118,7 +125,69 @@ function FeaturesSection({ navigate }) {
   );
 }
 
-// ─── KI Section ──────────────────────────────────────────────────────────────
+// ─── Projects (LEFT) ───────────────────────────────────────────────────────────
+function ProjectsSection() {
+  React.useEffect(() => {
+    if (document.getElementById('wa-projects-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'wa-projects-styles';
+    s.textContent = `
+      .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem}
+      @media(max-width:640px){.projects-grid{grid-template-columns:1fr}}
+      .project-card{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--surface);transition:border-color .35s,transform .35s}
+      .project-card:hover{border-color:var(--proj-color);transform:translateY(-4px)}
+      .project-thumb{height:180px;display:flex;align-items:center;justify-content:center;background:var(--proj-dim)}
+      .project-thumb-wordmark{font-family:var(--font-display);font-size:clamp(22px,3vw,32px);letter-spacing:.06em;color:var(--proj-color);opacity:.6;padding:0 1.5rem;text-align:center}
+      .project-body{padding:1.5rem 1.5rem 1.75rem}
+      .project-name{font-family:var(--font-head);font-size:17px;font-weight:700;margin:0 0 .65rem;color:var(--text)}
+      .project-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem}
+      .project-tag{font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--muted);letter-spacing:.03em}
+      .project-case-link{font-size:13px;color:var(--muted);font-weight:600;transition:color .2s}
+      .project-card:hover .project-case-link{color:var(--proj-color)}
+      .projects-footer{text-align:center;margin-top:3rem}
+    `;
+    document.head.appendChild(s);
+  }, []);
+
+  const projects = [
+    { name:'Grundner GmbH',  tags:['Webdesign','Framer','SEO'],            color:'#2563eb', dim:'rgba(37,99,235,.07)'   },
+    { name:'Schmuckkultur',  tags:['Webdesign','Brand Identity'],           color:'#d97706', dim:'rgba(217,119,6,.07)'   },
+    { name:'Dr. Derya',      tags:['Webdesign','GEO','Framer'],             color:'#059669', dim:'rgba(5,150,105,.07)'   },
+    { name:'CityEvents',     tags:['KI-Automatisierung','Webdesign','SEO'], color:'#dc2626', dim:'rgba(220,38,38,.07)'   },
+  ];
+
+  return (
+    <section className="section">
+      <Reveal><p className="section-label">{ '{ Ausgewählte Arbeiten }' }</p></Reveal>
+      <Reveal delay={80}><h2 className="section-h2" style={{marginBottom:'3rem'}}>2024–2026</h2></Reveal>
+      <div className="projects-grid">
+        {projects.map((p, i) => (
+          <Reveal key={p.name} delay={i * 100}>
+            <div className="project-card" style={{'--proj-color': p.color, '--proj-dim': p.dim}}>
+              <div className="project-thumb">
+                <span className="project-thumb-wordmark">{p.name}</span>
+              </div>
+              <div className="project-body">
+                <h3 className="project-name">{p.name}</h3>
+                <div className="project-tags">
+                  {p.tags.map(t => <span key={t} className="project-tag">{t}</span>)}
+                </div>
+                <span className="project-case-link">Case ansehen →</span>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+      <Reveal delay={420}>
+        <div className="projects-footer">
+          <button className="btn-ghost">Alle Projekte ansehen →</button>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
+// ─── KI Section (LEFT) ───────────────────────────────────────────────────────────
 function WorkflowSVG() {
   const nodes = [
     { x:20, y:40, w:120, h:48, label:'Lead Eingang', sub:'Web / CRM' },
@@ -162,8 +231,8 @@ function KISection({ navigate }) {
       <div className="ki-inner">
         <div className="ki-text">
           <Reveal><p className="section-label">{ '{ KI-Automatisierung }' }</p></Reveal>
-          <Reveal delay={80}><h2 className="section-h2" style={{fontSize:'clamp(40px,5vw,72px)'}}>Schluss mit<br/>manuellem Aufwand.</h2></Reveal>
-          <Reveal delay={160}><p className="body-lg" style={{color:'var(--muted)',marginBottom:'2rem'}}>Wir bauen dir KI-Workflows, die rund um die Uhr für dich arbeiten — ganz ohne deinen Input.</p></Reveal>
+          <Reveal delay={80}><h2 className="section-h2" style={{fontSize:'clamp(40px,5vw,72px)',marginBottom:'1.5rem'}}>Schluss mit<br/>manuellem Aufwand.</h2></Reveal>
+          <Reveal delay={160}><p className="body-lg" style={{color:'var(--muted)',marginBottom:'3rem'}}>Wir bauen dir KI-Workflows, die rund um die Uhr für dich arbeiten — ganz ohne deinen Input.</p></Reveal>
           <div className="ki-features">
             {features.map((f,i) => (
               <Reveal key={i} delay={200+i*80}>
@@ -172,7 +241,7 @@ function KISection({ navigate }) {
             ))}
           </div>
           <Reveal delay={600}>
-            <button className="btn-primary" style={{marginTop:'2.5rem'}} onClick={() => navigate('ki')}>KI-Automatisierung anfragen →</button>
+            <button className="btn-primary" style={{marginTop:'3rem'}} onClick={() => navigate('ki')}>KI-Automatisierung anfragen →</button>
           </Reveal>
         </div>
         <Reveal delay={200} className="ki-visual"><WorkflowSVG /></Reveal>
@@ -181,35 +250,57 @@ function KISection({ navigate }) {
   );
 }
 
-// ─── Process ─────────────────────────────────────────────────────────────────
-function ProcessSection() {
-  const steps = [
-    { num:'01', title:'Briefing', desc:'Kostenloses Erstgespräch (30 Min.) — wir verstehen dein Ziel.' },
-    { num:'02', title:'Strategie', desc:'Wir analysieren dein Potenzial & liefern einen konkreten Plan.' },
-    { num:'03', title:'Umsetzung', desc:'Bau, Test, Iteration — schnell & transparent.' },
-    { num:'04', title:'Launch & Scale', desc:'Go-Live + laufende Optimierung & KI-Monitoring.' },
+// ─── Comparison (CENTER) ─────────────────────────────────────────────────────────
+function ComparisonSection() {
+  React.useEffect(() => {
+    if (document.getElementById('wa-comp-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'wa-comp-styles';
+    s.textContent = `
+      .comp-inner{max-width:860px;margin:0 auto}
+      .comp-note{text-align:center;max-width:640px;margin:2rem auto 0;font-size:14px;color:var(--muted);line-height:1.7}
+    `;
+    document.head.appendChild(s);
+  }, []);
+
+  const rows = [
+    { label:'Reaktionszeit',        wa:'24h',         free:'variabel',  big:'1–2 Wochen' },
+    { label:'Lieferzeit',           wa:'2–3 Wochen', free:'variabel',  big:'2–3 Monate' },
+    { label:'KI-Automatisierung',   wa:'✓',           free:'selten',    big:'teuer extra' },
+    { label:'Persönlicher Kontakt', wa:'✓',           free:'✓',         big:'✗' },
+    { label:'Büro Wien & Frankfurt',wa:'✓',           free:'✗',         big:'✗' },
+    { label:'Faire Preise',         wa:'✓',           free:'✓',         big:'✗' },
   ];
   return (
-    <section className="section process-section">
-      <Reveal><p className="section-label">{ '{ Wie wir arbeiten }' }</p></Reveal>
-      <Reveal delay={80}><h2 className="section-h2">Vom Erstgespräch<br/>zur laufenden Automation</h2></Reveal>
-      <div className="process-track">
-        {steps.map((s,i) => (
-          <Reveal key={s.num} delay={i*150} className="process-step-wrap">
-            <div className="process-step">
-              <div className="process-num">{s.num}</div>
-              <div className="process-line" />
-              <h3 className="process-title">{s.title}</h3>
-              <p className="process-desc">{s.desc}</p>
+    <section className="section comparison-section">
+      <Reveal><p className="section-label" style={{justifyContent:'center'}}>{ '{ Warum WebArs }' }</p></Reveal>
+      <Reveal delay={80}><h2 className="section-h2" style={{textAlign:'center',marginBottom:'3rem'}}>Kein Roulette.<br/>Kein Offshore.</h2></Reveal>
+      <Reveal delay={160}>
+        <div className="comp-inner">
+          <div className="comparison-table">
+            <div className="comp-header">
+              <div className="comp-label-col"></div>
+              <div className="comp-col comp-col-wa">WebArs</div>
+              <div className="comp-col">Freelancer</div>
+              <div className="comp-col">Große Agentur</div>
             </div>
-          </Reveal>
-        ))}
-      </div>
+            {rows.map(r => (
+              <div key={r.label} className="comp-row">
+                <div className="comp-label-col">{r.label}</div>
+                <div className="comp-col comp-col-wa comp-val-wa">{r.wa}</div>
+                <div className="comp-col comp-val">{r.free}</div>
+                <div className="comp-col comp-val">{r.big}</div>
+              </div>
+            ))}
+          </div>
+          <p className="comp-note">Persönlicher Ansprechpartner in Wien & Frankfurt. Kein anonymes Ticketsystem, keine Offshore-Teams — nur direkte Kommunikation und nachweisbare Ergebnisse.</p>
+        </div>
+      </Reveal>
     </section>
   );
 }
 
-// ─── Testimonials ─────────────────────────────────────────────────────────────
+// ─── Testimonials (LEFT) ─────────────────────────────────────────────────────────
 const TESTIMONIALS = [
   { quote:'"WebArs hat unsere Buchungsrate in 6 Wochen um 61% gesteigert. Das ist kein Marketing — das sind Zahlen."', name:'Lena Chatsakos & Jimmy Jura', role:'CityEvents', stats:[{v:'+61%',l:'Konversionsrate'},{v:'+28%',l:'Kundenbindung'}] },
   { quote:'"Die haben genau verstanden, was ich brauche. Nicht eine Website — ein System, das neue Kunden bringt."', name:'Prince Mike', role:'DJ & Sprnterrecords', stats:[] },
@@ -222,6 +313,7 @@ function TestimonialsSection() {
   return (
     <section className="section testimonials-section">
       <Reveal><p className="section-label">{ '{ Was Kunden sagen }' }</p></Reveal>
+      <Reveal delay={80}><h2 className="section-h2" style={{marginBottom:'3rem'}}>Ergebnisse,<br/>keine Versprechen.</h2></Reveal>
       <div className="testimonial-body">
         <div className="testimonial-photo">
           <svg width="100%" height="100%" style={{position:'absolute',inset:0}}>
@@ -255,16 +347,16 @@ function TestimonialsSection() {
   );
 }
 
-// ─── Offer Process ────────────────────────────────────────────────────────────
+// ─── Offer Process (CENTER) ────────────────────────────────────────────────────────
 function OfferProcessSection({ navigate }) {
   React.useEffect(() => {
     if (document.getElementById('wa-offer-styles')) return;
     const s = document.createElement('style');
     s.id = 'wa-offer-styles';
     s.textContent = `
-      .offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:900px;margin:3rem auto 0}
+      .offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:900px;margin:0 auto}
       @media(max-width:640px){.offer-grid{grid-template-columns:1fr}}
-      .offer-card{border:1px solid var(--border);border-radius:14px;padding:2rem 2rem 1.75rem;position:relative;background:var(--surface);transition:border-color .3s,transform .35s;overflow:hidden}
+      .offer-card{border:1px solid var(--border);border-radius:14px;padding:2rem 2rem 1.75rem;position:relative;background:var(--surface);transition:border-color .3s,transform .35s;overflow:hidden;text-align:left}
       .offer-card:hover{border-color:var(--accent);transform:translateY(-4px)}
       .offer-card.offer-highlight{border-color:var(--accent);background:linear-gradient(135deg,rgba(24,64,255,.07) 0%,var(--surface) 100%)}
       .offer-step-num{font-family:var(--font-display);font-size:88px;line-height:1;color:var(--accent);opacity:.12;position:absolute;bottom:-.5rem;right:1rem;pointer-events:none;user-select:none;transition:opacity .3s}
@@ -273,7 +365,7 @@ function OfferProcessSection({ navigate }) {
       .offer-step-title{font-family:var(--font-head);font-size:21px;font-weight:800;margin:0 0 .65rem;color:var(--text)}
       .offer-step-desc{font-size:15px;color:var(--muted);line-height:1.7;margin:0;position:relative;z-index:1}
       .offer-highlight .offer-step-tag{color:#fff;background:var(--accent);padding:2px 8px;border-radius:4px;letter-spacing:.08em}
-      .offer-cta-block{text-align:center;margin-top:3.5rem}
+      .offer-cta-block{text-align:center;margin-top:3rem}
       .offer-cta-note{font-size:13px;color:var(--muted);margin-top:1rem;letter-spacing:.02em}
     `;
     document.head.appendChild(s);
@@ -288,16 +380,16 @@ function OfferProcessSection({ navigate }) {
 
   return (
     <section className="section">
-      <Reveal><p className="section-label">{ '{ Wie läuft es ab? }' }</p></Reveal>
-      <Reveal delay={80}><h2 className="section-h2">Erst das Gespräch.<br/>Dann der Preis.</h2></Reveal>
+      <Reveal><p className="section-label" style={{justifyContent:'center'}}>{ '{ Wie läuft es ab? }' }</p></Reveal>
+      <Reveal delay={80}><h2 className="section-h2" style={{textAlign:'center',marginBottom:'1.5rem'}}>Erst das Gespräch.<br/>Dann der Preis.</h2></Reveal>
       <Reveal delay={150}>
-        <p className="body-lg" style={{color:'var(--muted)',maxWidth:'560px',margin:'1rem 0 0'}}>
+        <p className="body-lg" style={{color:'var(--muted)',textAlign:'center',maxWidth:'540px',margin:'0 auto',marginBottom:'3rem'}}>
           Kein Fixpreis von der Stange. Jedes Projekt ist anders — deshalb bekommst du ein Angebot, das wirklich zu dir passt.
         </p>
       </Reveal>
       <div className="offer-grid">
         {steps.map((step, i) => (
-          <Reveal key={step.num} delay={220 + i * 100}>
+          <Reveal key={step.num} delay={200 + i * 100}>
             <div className={`offer-card${step.highlight ? ' offer-highlight' : ''}`}>
               <span className="offer-step-num">{step.num}</span>
               <p className="offer-step-tag">{step.tag}</p>
@@ -307,7 +399,7 @@ function OfferProcessSection({ navigate }) {
           </Reveal>
         ))}
       </div>
-      <Reveal delay={560}>
+      <Reveal delay={540}>
         <div className="offer-cta-block">
           <button className="btn-primary btn-xl" onClick={() => navigate('contact')}>Kostenloses Erstgespräch buchen →</button>
           <p className="offer-cta-note">Kostenlos · Unverbindlich · Antwort innerhalb 24h</p>
@@ -317,7 +409,7 @@ function OfferProcessSection({ navigate }) {
   );
 }
 
-// ─── FAQ ──────────────────────────────────────────────────────────────────────
+// ─── FAQ (LEFT) ───────────────────────────────────────────────────────────────────
 const FAQS = [
   { q:'Was ist KI-Automatisierung und brauche ich das wirklich?', a:'KI-Automatisierung bedeutet, dass wiederkehrende Aufgaben — vom Lead-Management bis zur Kundenkommunikation — von intelligenten Workflows übernommen werden. Das spart Zeit, reduziert Fehler und skaliert ohne Mehrkosten. Ja, du brauchst das.' },
   { q:'Welche KI-Tools setzt WebArs ein?', a:'Wir arbeiten mit n8n, Make (ex-Integromat), dem OpenAI/Claude API, Zapier, und bauen individuelle Integrationen für HubSpot, Notion, Slack, Pipedrive und weitere Tools.' },
@@ -358,7 +450,7 @@ function FAQSection() {
   );
 }
 
-// ─── Closing CTA ──────────────────────────────────────────────────────────────
+// ─── Closing CTA (CENTER) ─────────────────────────────────────────────────────────
 function ClosingCTA({ navigate }) {
   React.useEffect(() => {
     if (document.getElementById('wa-cta-styles')) return;
@@ -408,60 +500,6 @@ function ClosingCTA({ navigate }) {
   );
 }
 
-// ─── Comparison ────────────────────────────────────────────────────────────────
-function ComparisonSection() {
-  React.useEffect(() => {
-    if (document.getElementById('wa-comp-styles')) return;
-    const s = document.createElement('style');
-    s.id = 'wa-comp-styles';
-    s.textContent = `
-      .comp-inner{max-width:860px;margin:0 auto}
-      .comp-note{text-align:center;max-width:660px;margin:2rem auto 0}
-    `;
-    document.head.appendChild(s);
-  }, []);
-
-  const rows = [
-    { label:'Reaktionszeit',        wa:'24h',         free:'variabel',  big:'1–2 Wochen' },
-    { label:'Lieferzeit',           wa:'2–3 Wochen', free:'variabel',  big:'2–3 Monate' },
-    { label:'KI-Automatisierung',   wa:'✓',           free:'selten',    big:'teuer extra' },
-    { label:'Persönlicher Kontakt', wa:'✓',           free:'✓',         big:'✗' },
-    { label:'Büro Wien & Frankfurt',wa:'✓',           free:'✗',         big:'✗' },
-    { label:'Faire Preise',         wa:'✓',           free:'✓',         big:'✗' },
-  ];
-  return (
-    <section className="section comparison-section">
-      <Reveal style={{textAlign:'center'}}>
-        <p className="section-label" style={{justifyContent:'center'}}>{ '{ Warum WebArs }' }</p>
-      </Reveal>
-      <Reveal delay={80}>
-        <h2 className="section-h2" style={{textAlign:'center',marginBottom:'3rem'}}>Kein Roulette.<br/>Kein Offshore.</h2>
-      </Reveal>
-      <Reveal delay={160}>
-        <div className="comp-inner">
-          <div className="comparison-table">
-            <div className="comp-header">
-              <div className="comp-label-col"></div>
-              <div className="comp-col comp-col-wa">WebArs</div>
-              <div className="comp-col">Freelancer</div>
-              <div className="comp-col">Große Agentur</div>
-            </div>
-            {rows.map(r => (
-              <div key={r.label} className="comp-row">
-                <div className="comp-label-col">{r.label}</div>
-                <div className="comp-col comp-col-wa comp-val-wa">{r.wa}</div>
-                <div className="comp-col comp-val">{r.free}</div>
-                <div className="comp-col comp-val">{r.big}</div>
-              </div>
-            ))}
-          </div>
-          <p className="comp-note">Persönlicher Ansprechpartner in Wien & Frankfurt. Kein anonymes Ticketsystem, keine Offshore-Teams — nur direkte Kommunikation und nachweisbare Ergebnisse.</p>
-        </div>
-      </Reveal>
-    </section>
-  );
-}
-
 // ─── HomePage ────────────────────────────────────────────────────────────────
 function HomePage({ navigate }) {
   return (
@@ -470,10 +508,10 @@ function HomePage({ navigate }) {
       <TrustLogoSection />
       <MarqueeSection />
       <FeaturesSection navigate={navigate} />
+      <ProjectsSection />
       <KISection navigate={navigate} />
-      <ProcessSection />
-      <TestimonialsSection />
       <ComparisonSection />
+      <TestimonialsSection />
       <OfferProcessSection navigate={navigate} />
       <FAQSection />
       <ClosingCTA navigate={navigate} />
