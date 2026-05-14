@@ -23,8 +23,6 @@ function HeroSection({ navigate }) {
           <span className="proof-live-dot" />
           <span>★ 4.9 Trustpilot</span>
           <span className="proof-sep">·</span>
-          <span>50+ Projekte</span>
-          <span className="proof-sep">·</span>
           <span>Ø 2–3 Wo. Lieferzeit</span>
           <span className="proof-sep">·</span>
           <span>24h Reaktionszeit</span>
@@ -418,21 +416,17 @@ function ClosingCTA({ navigate }) {
     if (document.getElementById('wa-cta-styles')) return;
     const s = document.createElement('style');
     s.id = 'wa-cta-styles';
+    // Mirror hero-cloud positioning/animations for the closing section
     s.textContent = `
-      .cta-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(70px)}
-      .cta-orb-1{width:420px;height:420px;left:-140px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(249,69,45,.28) 0%,transparent 70%);animation:ctaOrb 9s ease-in-out infinite alternate}
-      .cta-orb-2{width:380px;height:380px;right:-120px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(249,69,45,.18) 0%,transparent 70%);animation:ctaOrb 11s ease-in-out infinite alternate-reverse}
-      .cta-orb-3{width:220px;height:220px;left:50%;top:-80px;transform:translateX(-50%);background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 70%);animation:ctaOrb3 7s ease-in-out infinite alternate}
-      @keyframes ctaOrb{0%{transform:translateY(-50%) scale(1)}100%{transform:translateY(calc(-50% - 35px)) scale(1.18)}}
-      @keyframes ctaOrb3{0%{opacity:.5;transform:translateX(-50%) scale(1)}100%{opacity:1;transform:translateX(-50%) scale(1.25)}}
+      .cta-cloud-left,.cta-cloud-right{position:absolute;width:130%;height:640px;bottom:-200px;background-image:url('assets/cloud.png');background-size:contain;background-repeat:no-repeat;background-position:center top;opacity:0;pointer-events:none;z-index:1}
+      .cta-cloud-left{left:-55%;animation:cloudInLeft 1.4s ease 0.3s both,cloudDriftL 11s ease-in-out 1.7s infinite}
+      .cta-cloud-right{right:-55%;animation:cloudInRight 1.4s ease 0.3s both,cloudDriftR 14s ease-in-out 2.2s infinite}
+      .cta-orb-l,.cta-orb-r{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);z-index:0}
+      .cta-orb-l{width:480px;height:480px;left:-160px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(249,69,45,.22) 0%,transparent 65%);animation:ctaOrbFloat 9s ease-in-out infinite alternate}
+      .cta-orb-r{width:420px;height:420px;right:-140px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(249,69,45,.16) 0%,transparent 65%);animation:ctaOrbFloat 12s ease-in-out infinite alternate-reverse}
+      @keyframes ctaOrbFloat{0%{transform:translateY(-50%) scale(1)}100%{transform:translateY(calc(-50% - 28px)) scale(1.12)}}
       .closing-glow{animation:glowPulse 5s ease-in-out infinite alternate}
-      @keyframes glowPulse{0%{opacity:.4;transform:scale(1) translateX(-50%)}100%{opacity:.9;transform:scale(1.15) translateX(-44%)}}
-      .cta-cloud-top{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:600px;height:130px;background:url('assets/cloud.png') center/contain no-repeat;opacity:.18;animation:ctaCloudDrift 14s ease-in-out infinite alternate;pointer-events:none;z-index:0}
-      .cta-cloud-mid-l{position:absolute;left:-80px;top:30%;width:360px;height:100px;background:url('assets/cloud.png') center/contain no-repeat;opacity:.22;animation:ctaCloudDrift 10s ease-in-out infinite alternate-reverse;pointer-events:none;z-index:0}
-      .cta-cloud-mid-r{position:absolute;right:-80px;top:55%;width:360px;height:100px;background:url('assets/cloud.png') center/contain no-repeat;transform:scaleX(-1);opacity:.22;animation:ctaCloudDrift 12s ease-in-out infinite alternate;pointer-events:none;z-index:0}
-      @keyframes ctaCloudDrift{0%{transform:translateX(0) translateY(0)}100%{transform:translateX(0) translateY(-22px)}}
-      .cta-cloud-mid-r{animation-name:ctaCloudDriftR}
-      @keyframes ctaCloudDriftR{0%{transform:scaleX(-1) translateY(0)}100%{transform:scaleX(-1) translateY(-22px)}}
+      @keyframes glowPulse{0%{opacity:.35;transform:scale(1) translateX(-50%)}100%{opacity:.85;transform:scale(1.18) translateX(-43%)}}
     `;
     document.head.appendChild(s);
   }, []);
@@ -440,17 +434,11 @@ function ClosingCTA({ navigate }) {
   return (
     <section className="closing-cta" style={{overflow:'hidden'}}>
       {/* Coloured ambient orbs */}
-      <div className="cta-orb cta-orb-1" />
-      <div className="cta-orb cta-orb-2" />
-      <div className="cta-orb cta-orb-3" />
-      {/* Drifting clouds */}
-      <div className="cta-cloud-top" />
-      <div className="cta-cloud-mid-l" />
-      <div className="cta-cloud-mid-r" />
-      <CloudAccent side="left"  top="10%" opacity={0.35} scale={1.2} />
-      <CloudAccent side="right" top="10%" opacity={0.35} scale={1.2} />
-      <CloudAccent side="left"  bottom="-10px" opacity={0.25} scale={0.85} />
-      <CloudAccent side="right" bottom="-10px" opacity={0.25} scale={0.85} />
+      <div className="cta-orb-l" />
+      <div className="cta-orb-r" />
+      {/* Hero-identical clouds at the bottom */}
+      <div className="cta-cloud-left" />
+      <div className="cta-cloud-right" />
 
       <div className="closing-bg">
         <svg width="100%" height="100%" style={{position:'absolute',inset:0}}>
