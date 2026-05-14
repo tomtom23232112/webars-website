@@ -5,40 +5,32 @@ function AboutPage({ navigate }) {
     const s = document.createElement('style');
     s.id = 'wa-about-styles';
     s.textContent = `
-      /* About hero — same sky gradient as main hero */
-      .about-hero{position:relative;min-height:70vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(180deg,#04070f 0%,#060d24 30%,var(--accent) 72%,var(--bg) 100%);text-align:center;padding:clamp(120px,16vw,200px) var(--px,40px) clamp(80px,10vw,120px)}
-      .about-hero-cloud-l,.about-hero-cloud-r{position:absolute;width:130%;height:640px;bottom:-200px;background-image:url('assets/cloud.png');background-size:contain;background-repeat:no-repeat;background-position:center top;opacity:0;pointer-events:none;z-index:1}
-      .about-hero-cloud-l{left:-55%;animation:cloudInLeft 1.4s ease .4s both,cloudDriftL 11s ease-in-out 1.8s infinite}
-      .about-hero-cloud-r{right:-55%;animation:cloudInRight 1.4s ease .4s both,cloudDriftR 14s ease-in-out 2.4s infinite}
-      .about-hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 65%,var(--accent) 0%,transparent 65%);opacity:.45;pointer-events:none}
-      .about-hero-content{position:relative;z-index:2;max-width:900px;margin:0 auto}
-      .about-hero-label{display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:1.5rem}
-      .about-hero-h1{font-family:var(--font-display);font-size:clamp(72px,13vw,180px);line-height:.9;letter-spacing:.02em;text-transform:uppercase;margin:.5rem 0 1.5rem;word-break:break-word}
-      .about-hero-sub{font-size:clamp(14px,1.3vw,17px);color:rgba(255,255,255,.55);letter-spacing:.1em;text-transform:uppercase;line-height:1.8}
-      /* Quote block */
-      .about-quote-wrap{max-width:860px;margin:0 auto;text-align:center;padding:clamp(40px,6vw,80px) var(--px,40px)}
-      .about-big-quote{font-family:var(--font-head);font-size:clamp(24px,3.5vw,48px);font-weight:700;line-height:1.25;color:var(--text)}
-      .about-big-quote em{font-style:normal}
+      /* Hero */
+      .about-hero{padding:clamp(140px,18vw,220px) var(--px,40px) clamp(60px,8vw,100px);border-bottom:1px solid var(--border)}
+      .about-hero-inner{max-width:900px}
+      .about-hero-h1{font-family:var(--font-display);font-size:clamp(64px,12vw,160px);line-height:.9;letter-spacing:.02em;text-transform:uppercase;margin:.75rem 0 2rem}
+      .about-hero-sub{font-size:clamp(15px,1.3vw,18px);color:var(--muted);line-height:1.7;max-width:560px}
+      .about-accent-line{width:48px;height:3px;background:var(--accent);border-radius:2px;margin:1.5rem 0}
       /* Stats row */
-      .about-stats{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;margin-top:3rem;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface)}
-      .about-stat{flex:1;min-width:160px;padding:1.75rem 1.5rem;text-align:center;border-right:1px solid var(--border)}
+      .about-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:3.5rem}
+      .about-stat{padding:1.75rem 1.5rem;border-right:1px solid var(--border);background:var(--surface)}
       .about-stat:last-child{border-right:none}
-      .about-stat-val{font-family:var(--font-display);font-size:clamp(36px,5vw,64px);color:var(--accent);line-height:1;display:block}
-      .about-stat-lbl{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:.4rem;display:block}
+      .about-stat-val{font-family:var(--font-display);font-size:clamp(36px,4.5vw,60px);color:var(--accent);line-height:1;display:block}
+      .about-stat-lbl{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:.4rem;display:block}
+      @media(max-width:640px){.about-stats{grid-template-columns:repeat(2,1fr)}.about-stat:nth-child(2){border-right:none}.about-stat:nth-child(3){border-top:1px solid var(--border)}.about-stat:nth-child(4){border-top:1px solid var(--border);border-right:none}}
       /* Timeline */
-      .about-timeline{display:flex;flex-direction:column;gap:0;max-width:720px;margin:0 auto}
+      .about-timeline{display:flex;flex-direction:column;max-width:720px}
       .timeline-item{display:grid;grid-template-columns:140px 2px 1fr;gap:0 2rem;align-items:start;padding-bottom:3rem}
       .timeline-date{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding-top:.35rem;text-align:right}
-      .timeline-dot{width:2px;background:var(--border);position:relative;margin-top:.5rem}
-      .timeline-dot::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+      .timeline-track{width:2px;background:var(--border);position:relative;margin-top:.5rem}
+      .timeline-track::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
       .timeline-event{font-family:var(--font-head);font-size:20px;font-weight:700;margin-bottom:.5rem}
       .timeline-desc{color:var(--muted);font-size:14px;line-height:1.6}
       /* Offices */
       .offices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
-      .office-card{padding:2rem}
       .office-city{font-family:var(--font-head);font-size:22px;font-weight:700;margin-bottom:1rem}
       .office-addr{color:var(--muted);font-size:14px;line-height:1.8;white-space:pre-line}
-      @media(max-width:600px){.timeline-item{grid-template-columns:1fr}.timeline-date{text-align:left}.timeline-dot{display:none}.about-stat{min-width:130px}}
+      @media(max-width:600px){.timeline-item{grid-template-columns:1fr}.timeline-date{text-align:left}.timeline-track{display:none}}
     `;
     document.head.appendChild(s);
   }, []);
@@ -65,41 +57,23 @@ function AboutPage({ navigate }) {
 
   return (
     <main>
-      {/* Hero */}
+      {/* Hero — clean, no sky */}
       <section className="about-hero">
-        <div className="about-hero-cloud-l" />
-        <div className="about-hero-cloud-r" />
-        <div className="about-hero-glow" />
-        <div className="about-hero-content">
-          <Reveal>
-            <p className="about-hero-label">{ '{ Über uns }' }</p>
-          </Reveal>
-          <Reveal delay={120}>
+        <div className="about-hero-inner">
+          <Reveal><p className="section-label">{ '{ Über uns }' }</p></Reveal>
+          <Reveal delay={100}>
             <h1 className="about-hero-h1">Lerne das Team<br/>kennen.</h1>
           </Reveal>
-          <Reveal delay={240}>
-            <p className="about-hero-sub">Effizient · Zielgerichtet · Pragmatisch · Flexibel</p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Quote + Stats */}
-      <section className="section" style={{borderBottom:'1px solid var(--border)'}}>
-        <div className="about-quote-wrap">
-          <Reveal>
-            <p className="about-big-quote">
-              „Wir bauen keine <em>schönen Websites</em>.<br/>
-              Wir bauen <em style={{color:'var(--accent)'}}>Systeme, die wachsen.</em>“
+          <div className="about-accent-line" />
+          <Reveal delay={220}>
+            <p className="about-hero-sub">
+              Wir bauen Systeme, die wachsen — keine generischen Websites, keine leeren Versprechen.
+              Aus Wien & Frankfurt, für den deutschsprachigen Raum.
             </p>
           </Reveal>
-          <Reveal delay={160}>
-            <p className="body-lg" style={{color:'var(--muted)',marginTop:'1.75rem',fontSize:'clamp(15px,1.3vw,18px)',lineHeight:1.7}}>
-              WebArs wurde gegründet, weil wir selbst erlebt haben, was Agenturen typischerweise liefern: generische Websites, leere Versprechen, keine Messbarkeit. Das machen wir anders. Kein Bullshit, keine unnötigen Meetings — nur Ergebnisse.
-            </p>
-          </Reveal>
-          <Reveal delay={260}>
+          <Reveal delay={320}>
             <div className="about-stats">
-              {stats.map((s,i) => (
+              {stats.map(s => (
                 <div key={s.lbl} className="about-stat">
                   <span className="about-stat-val">{s.val}</span>
                   <span className="about-stat-lbl">{s.lbl}</span>
@@ -110,12 +84,30 @@ function AboutPage({ navigate }) {
         </div>
       </section>
 
+      {/* Quote */}
+      <section className="section" style={{borderBottom:'1px solid var(--border)'}}>
+        <Reveal>
+          <p className="section-label">{ '{ Unsere Haltung }' }</p>
+        </Reveal>
+        <Reveal delay={100}>
+          <h2 className="section-h2" style={{maxWidth:'760px',marginTop:'.75rem'}}>
+            „Wir bauen keine schönen Websites.<br/>
+            Wir bauen Systeme, die wachsen.“
+          </h2>
+        </Reveal>
+        <Reveal delay={200}>
+          <p className="body-lg" style={{color:'var(--muted)',marginTop:'1.75rem',maxWidth:'620px',lineHeight:1.75}}>
+            WebArs wurde gegründet, weil wir selbst erlebt haben, was Agenturen typischerweise liefern:
+            generische Websites, leere Versprechen, keine Messbarkeit.
+            Das machen wir anders — kein Bullshit, keine unnötigen Meetings, nur Ergebnisse.
+          </p>
+        </Reveal>
+      </section>
+
       {/* USPs */}
       <section className="section" style={{borderBottom:'1px solid var(--border)'}}>
-        <Reveal style={{textAlign:'center',marginBottom:'3rem'}}>
-          <p className="section-label" style={{justifyContent:'center',display:'flex'}}>{ '{ Unsere Werte }' }</p>
-          <h2 className="section-h2" style={{textAlign:'center',marginTop:'.75rem'}}>Wie wir denken.<br/>Wie wir arbeiten.</h2>
-        </Reveal>
+        <Reveal><p className="section-label">{ '{ Unsere Werte }' }</p></Reveal>
+        <Reveal delay={80}><h2 className="section-h2" style={{marginTop:'.75rem',marginBottom:'3rem'}}>Wie wir denken.<br/>Wie wir arbeiten.</h2></Reveal>
         <div className="features-grid">
           {usps.map(([title, desc], i) => (
             <Reveal key={title} delay={i * 100} className="feature-card-wrap">
@@ -133,16 +125,14 @@ function AboutPage({ navigate }) {
 
       {/* Timeline */}
       <section className="section" style={{borderBottom:'1px solid var(--border)'}}>
-        <Reveal style={{textAlign:'center',marginBottom:'3rem'}}>
-          <p className="section-label" style={{justifyContent:'center',display:'flex'}}>{ '{ Geschichte }' }</p>
-          <h2 className="section-h2" style={{textAlign:'center',marginTop:'.75rem'}}>Wie wir hierher<br/>gekommen sind.</h2>
-        </Reveal>
+        <Reveal><p className="section-label">{ '{ Geschichte }' }</p></Reveal>
+        <Reveal delay={80}><h2 className="section-h2" style={{marginTop:'.75rem',marginBottom:'3rem'}}>Wie wir hierher<br/>gekommen sind.</h2></Reveal>
         <div className="about-timeline">
           {timeline.map((t, i) => (
             <Reveal key={t.date} delay={i * 150}>
               <div className="timeline-item">
                 <div className="timeline-date">{t.date}</div>
-                <div className="timeline-dot" />
+                <div className="timeline-track" />
                 <div className="timeline-body">
                   <h3 className="timeline-event">{t.event}</h3>
                   <p className="timeline-desc">{t.desc}</p>
@@ -155,17 +145,15 @@ function AboutPage({ navigate }) {
 
       {/* Offices */}
       <section className="section">
-        <Reveal style={{textAlign:'center',marginBottom:'3rem'}}>
-          <p className="section-label" style={{justifyContent:'center',display:'flex'}}>{ '{ Standorte }' }</p>
-          <h2 className="section-h2" style={{textAlign:'center',marginTop:'.75rem'}}>Komm vorbei.</h2>
-        </Reveal>
+        <Reveal><p className="section-label">{ '{ Standorte }' }</p></Reveal>
+        <Reveal delay={80}><h2 className="section-h2" style={{marginTop:'.75rem',marginBottom:'3rem'}}>Komm vorbei.</h2></Reveal>
         <div className="offices-grid">
           {[
             { city:'Wien', addr:'Tower 9\nHauptbahnhof\n1100 Wien, Österreich', flag:'🇦🇹' },
             { city:'Frankfurt', addr:'Spaces Omniturm\nGrüneburgweg 18\n60322 Frankfurt, Deutschland', flag:'🇩🇪' },
           ].map(o => (
             <Reveal key={o.city} delay={100} className="feature-card-wrap">
-              <div className="feature-card office-card">
+              <div className="feature-card">
                 <div className="office-city">{o.flag} {o.city}</div>
                 <p className="office-addr">{o.addr}</p>
                 <button className="btn-outline" style={{marginTop:'1.5rem'}} onClick={() => navigate('contact')}>Kontakt aufnehmen →</button>
@@ -190,7 +178,7 @@ function AboutPage({ navigate }) {
   );
 }
 
-// ─── Contact Page ─────────────────────────────────────────────────────────────────
+// ─── Contact Page ───────────────────────────────────────────────────────────────────
 function ContactPage() {
   const [form, setForm] = React.useState({ name:'', email:'', company:'', message:'', service:'webdesign' });
   const [sent, setSent] = React.useState(false);
