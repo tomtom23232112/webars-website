@@ -416,39 +416,26 @@ function ClosingCTA({ navigate }) {
     if (document.getElementById('wa-cta-styles')) return;
     const s = document.createElement('style');
     s.id = 'wa-cta-styles';
-    // Mirror hero-cloud positioning/animations for the closing section
     s.textContent = `
+      /* Sky gradient identical to hero so clouds get the same colour */
+      .closing-cta{background:linear-gradient(180deg,#04070f 0%,#060d24 28%,var(--accent) 68%,var(--bg) 100%)!important}
+      /* Strengthen glow to match hero atmosphere */
+      .closing-glow{background:radial-gradient(ellipse at 50% 60%,var(--accent) 0%,rgba(0,0,0,0) 65%)!important;opacity:.55;animation:glowPulse 5s ease-in-out infinite alternate}
+      @keyframes glowPulse{0%{opacity:.35;transform:scale(1) translateX(-50%)}100%{opacity:.7;transform:scale(1.2) translateX(-42%)}}
+      /* Hero-identical cloud divs */
       .cta-cloud-left,.cta-cloud-right{position:absolute;width:130%;height:640px;bottom:-200px;background-image:url('assets/cloud.png');background-size:contain;background-repeat:no-repeat;background-position:center top;opacity:0;pointer-events:none;z-index:1}
       .cta-cloud-left{left:-55%;animation:cloudInLeft 1.4s ease 0.3s both,cloudDriftL 11s ease-in-out 1.7s infinite}
       .cta-cloud-right{right:-55%;animation:cloudInRight 1.4s ease 0.3s both,cloudDriftR 14s ease-in-out 2.2s infinite}
-      .cta-orb-l,.cta-orb-r{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);z-index:0}
-      .cta-orb-l{width:480px;height:480px;left:-160px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(249,69,45,.22) 0%,transparent 65%);animation:ctaOrbFloat 9s ease-in-out infinite alternate}
-      .cta-orb-r{width:420px;height:420px;right:-140px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(249,69,45,.16) 0%,transparent 65%);animation:ctaOrbFloat 12s ease-in-out infinite alternate-reverse}
-      @keyframes ctaOrbFloat{0%{transform:translateY(-50%) scale(1)}100%{transform:translateY(calc(-50% - 28px)) scale(1.12)}}
-      .closing-glow{animation:glowPulse 5s ease-in-out infinite alternate}
-      @keyframes glowPulse{0%{opacity:.35;transform:scale(1) translateX(-50%)}100%{opacity:.85;transform:scale(1.18) translateX(-43%)}}
     `;
     document.head.appendChild(s);
   }, []);
 
   return (
     <section className="closing-cta" style={{overflow:'hidden'}}>
-      {/* Coloured ambient orbs */}
-      <div className="cta-orb-l" />
-      <div className="cta-orb-r" />
-      {/* Hero-identical clouds at the bottom */}
       <div className="cta-cloud-left" />
       <div className="cta-cloud-right" />
 
       <div className="closing-bg">
-        <svg width="100%" height="100%" style={{position:'absolute',inset:0}}>
-          <defs>
-            <pattern id="cpph" patternUnits="userSpaceOnUse" width="30" height="30" patternTransform="rotate(20)">
-              <rect width="15" height="30" fill="#0d0d0d" /><rect x="15" width="15" height="30" fill="#0a0a0a" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#cpph)" />
-        </svg>
         <div className="closing-glow" />
       </div>
 
