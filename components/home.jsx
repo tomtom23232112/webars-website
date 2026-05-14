@@ -34,7 +34,7 @@ function HeroSection({ navigate }) {
         <p className="hero-sub">Wir automatisieren wiederkehrende Aufgaben in deinem Unternehmen und bauen Websites, die wirklich Kunden bringen. Aus Wien & Frankfurt. Für den deutschsprachigen Raum.</p>
         <div className="hero-ctas" style={{justifyContent:'center',marginTop:'2.5rem'}}>
           <button className="btn-primary btn-xl hero-btn-primary" onClick={() => navigate('contact')}>Jetzt kostenlos beraten lassen →</button>
-          <button className="btn-ghost btn-xl hero-btn-ghost" onClick={() => { const el=document.getElementById('projects-section'); if(el) window.scrollTo({top:el.offsetTop-80,behavior:'smooth'}); }}>Projekte ansehen</button>
+          <button className="btn-ghost btn-xl hero-btn-ghost" onClick={() => { const el=document.getElementById('ki-section'); if(el) window.scrollTo({top:el.offsetTop-80,behavior:'smooth'}); }}>Mehr erfahren</button>
         </div>
       </div>
       <div className="hero-scroll-hint" style={{position:'absolute',zIndex:2}}>scroll</div>
@@ -60,11 +60,11 @@ function TrustLogoSection() {
   }, []);
 
   const logos = [
-    { name: 'Grundner GmbH',       color: '#2563eb' },
-    { name: 'Schmuckkultur',        color: '#d97706' },
-    { name: 'Dr. Derya',            color: '#059669' },
-    { name: 'CityEvents',           color: '#dc2626' },
-    { name: 'Stefanie Kosmalla',    color: '#7c3aed' },
+    { name:'Grundner GmbH',    color:'#2563eb' },
+    { name:'Schmuckkultur',    color:'#d97706' },
+    { name:'Dr. Derya',        color:'#059669' },
+    { name:'CityEvents',       color:'#dc2626' },
+    { name:'Stefanie Kosmalla',color:'#7c3aed' },
   ];
 
   return (
@@ -158,7 +158,7 @@ function KISection({ navigate }) {
     'Anbindung an bestehende Tools (HubSpot, Notion, Slack)',
   ];
   return (
-    <section className="section ki-section">
+    <section className="section ki-section" id="ki-section">
       <div className="ki-inner">
         <div className="ki-text">
           <Reveal><p className="section-label">{ '{ KI-Automatisierung }' }</p></Reveal>
@@ -177,60 +177,6 @@ function KISection({ navigate }) {
         </div>
         <Reveal delay={200} className="ki-visual"><WorkflowSVG /></Reveal>
       </div>
-    </section>
-  );
-}
-
-// ─── Projects ─────────────────────────────────────────────────────────────────
-const PROJECTS = [
-  { name:'Grundner GmbH', tags:['Web Design','Development'], year:'2025', desc:'Corporate Website mit Conversion-Fokus und individueller Framer-Animation.' },
-  { name:'Schmuckkultur', tags:['E-Commerce','Branding'], year:'2025', desc:'Hochwertiger Online-Shop mit Brand-System und UX-Optimierung.' },
-  { name:'Dr. Derya', tags:['Web Design','SEO'], year:'2024', desc:'Praxis-Website mit lokaler SEO-Strategie und Online-Booking.' },
-  { name:'CityEvents', tags:['Web Design','Marketing'], year:'2024', desc:'Event-Plattform — +28% Kundenbindung, +61% Konversionsrate.' },
-  { name:'Stefanie Kosmalla', tags:['Branding','Web Design'], year:'2024', desc:'Personal Brand — Coaching-Website mit Booking und Content-System.' },
-];
-
-function ProjectCard({ project, delay }) {
-  const [hov, setHov] = React.useState(false);
-  return (
-    <Reveal delay={delay} className="project-card-wrap">
-      <div className={`project-card ${hov?'card-hov':''}`} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} data-hover>
-        <div className="project-img">
-          <svg width="100%" height="100%" style={{position:'absolute',inset:0}}>
-            <defs><pattern id={`pp${project.name.replace(/\s/g,'')}`} patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(25)"><rect width="10" height="20" fill="#111" /><rect x="10" width="10" height="20" fill="#0d0d0d" /></pattern></defs>
-            <rect width="100%" height="100%" fill={`url(#pp${project.name.replace(/\s/g,'')})`} />
-          </svg>
-          <div className={`project-overlay ${hov?'overlay-in':''}`}><span className="project-cta">Ansehen →</span></div>
-        </div>
-        <div className="project-info">
-          <div className="project-meta">
-            {project.tags.map(t => <span key={t} className="tag">{t}</span>)}
-            <span className="tag tag-year">{project.year}</span>
-          </div>
-          <h3 className="project-name">{project.name}</h3>
-          <p className="project-desc">{project.desc}</p>
-        </div>
-      </div>
-    </Reveal>
-  );
-}
-
-function ProjectsSection({ navigate }) {
-  return (
-    <section className="section projects-section" id="projects-section">
-      <div className="projects-header">
-        <div>
-          <Reveal><p className="section-label">{ '{ Ausgewählte Arbeiten }' }</p></Reveal>
-          <Reveal delay={80}><h2 className="section-h2">Referenzen</h2></Reveal>
-        </div>
-        <Reveal delay={200}><span className="muted-text">2024 – 2025</span></Reveal>
-      </div>
-      <div className="projects-grid">
-        {PROJECTS.map((p,i) => <ProjectCard key={p.name} project={p} delay={i*100} />)}
-      </div>
-      <Reveal delay={200} style={{textAlign:'center',marginTop:'3rem'}}>
-        <button className="btn-ghost" onClick={() => navigate && navigate('contact')}>Alle Projekte ansehen →</button>
-      </Reveal>
     </section>
   );
 }
@@ -451,9 +397,7 @@ function ClosingCTA({ navigate }) {
     <section className="closing-cta" style={{overflow:'hidden'}}>
       <div className="cta-cloud-left" />
       <div className="cta-cloud-right" />
-      <div className="closing-bg">
-        <div className="closing-glow" />
-      </div>
+      <div className="closing-bg"><div className="closing-glow" /></div>
       <div className="closing-content">
         <Reveal><h2 className="closing-h">Bereit, smarter<br/>zu wachsen?</h2></Reveal>
         <Reveal delay={120}><p className="closing-sub">Kostenloses Erstgespräch — 30 Minuten, kein Pitch, nur Klarheit.</p></Reveal>
@@ -470,9 +414,7 @@ function ClosingCTA({ navigate }) {
             <a href="tel:+436703061078" className="btn-ghost btn-xl">+43 670 3061078</a>
           </div>
         </Reveal>
-        <Reveal delay={420}>
-          <p className="cta-microcopy">Bereits über 50 Unternehmen vertrauen WebArs · ★ 4.9/5 Trustpilot</p>
-        </Reveal>
+        <Reveal delay={420}><p className="cta-microcopy">Bereits über 50 Unternehmen vertrauen WebArs · ★ 4.9/5 Trustpilot</p></Reveal>
       </div>
     </section>
   );
@@ -481,12 +423,12 @@ function ClosingCTA({ navigate }) {
 // ─── Comparison ────────────────────────────────────────────────────────────────
 function ComparisonSection() {
   const rows = [
-    { label:'Reaktionszeit',        wa:'24h',          free:'variabel',   big:'1–2 Wochen' },
-    { label:'Lieferzeit',           wa:'2–3 Wochen',  free:'variabel',   big:'2–3 Monate' },
-    { label:'KI-Automatisierung',   wa:'✓',            free:'selten',     big:'teuer extra' },
-    { label:'Persönlicher Kontakt', wa:'✓',            free:'✓',          big:'✗' },
-    { label:'Büro Wien & Frankfurt',wa:'✓',            free:'✗',          big:'✗' },
-    { label:'Faire Preise',         wa:'✓',            free:'✓',          big:'✗' },
+    { label:'Reaktionszeit',        wa:'24h',         free:'variabel',  big:'1–2 Wochen' },
+    { label:'Lieferzeit',           wa:'2–3 Wochen', free:'variabel',  big:'2–3 Monate' },
+    { label:'KI-Automatisierung',   wa:'✓',           free:'selten',    big:'teuer extra' },
+    { label:'Persönlicher Kontakt', wa:'✓',           free:'✓',         big:'✗' },
+    { label:'Büro Wien & Frankfurt',wa:'✓',           free:'✗',         big:'✗' },
+    { label:'Faire Preise',         wa:'✓',           free:'✓',         big:'✗' },
   ];
   return (
     <section className="section comparison-section">
@@ -524,7 +466,6 @@ function HomePage({ navigate }) {
       <MarqueeSection />
       <FeaturesSection navigate={navigate} />
       <KISection navigate={navigate} />
-      <ProjectsSection navigate={navigate} />
       <ProcessSection />
       <TestimonialsSection />
       <ComparisonSection />
