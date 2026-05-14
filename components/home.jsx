@@ -17,7 +17,6 @@ function HeroSection({ navigate }) {
     <section className="hero">
       <div className="hero-cloud-left" />
       <div className="hero-cloud-right" />
-
       <div className="hero-content">
         <div className="hero-proof-strip">
           <span className="proof-live-dot" />
@@ -32,17 +31,56 @@ function HeroSection({ navigate }) {
           <span className={`hero-line hero-line-accent ${linesIn >= 2 ? 'line-in' : ''} ${!glitchDone ? 'glitch-active' : ''}`} data-text="Automatisiert.">Automatisiert.</span>
           <span className={`hero-line ${linesIn >= 3 ? 'line-in' : ''}`}>Skaliert.</span>
         </h1>
-        <p className="hero-sub">WebArs verbindet KI-Automatisierung mit modernem Webdesign —<br/>damit du schneller wächst als deine Konkurrenz.</p>
+        <p className="hero-sub">Wir automatisieren wiederkehrende Aufgaben in deinem Unternehmen und bauen Websites, die wirklich Kunden bringen. Aus Wien & Frankfurt. Für den deutschsprachigen Raum.</p>
         <div className="hero-ctas" style={{justifyContent:'center',marginTop:'2.5rem'}}>
           <button className="btn-primary btn-xl hero-btn-primary" onClick={() => navigate('contact')}>Jetzt kostenlos beraten lassen →</button>
           <button className="btn-ghost btn-xl hero-btn-ghost" onClick={() => { const el=document.getElementById('projects-section'); if(el) window.scrollTo({top:el.offsetTop-80,behavior:'smooth'}); }}>Projekte ansehen</button>
         </div>
       </div>
-
       <div className="hero-scroll-hint" style={{position:'absolute',zIndex:2}}>scroll</div>
     </section>
   );
 }
+
+// ─── Trust Logos ─────────────────────────────────────────────────────────────────
+function TrustLogoSection() {
+  React.useEffect(() => {
+    if (document.getElementById('wa-trust-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'wa-trust-styles';
+    s.textContent = `
+      .trust-logo-section{padding:2.5rem var(--px,40px) 2rem;border-bottom:1px solid var(--border)}
+      .trust-logo-label{text-align:center;font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:lowercase;margin-bottom:1.75rem}
+      .trust-logo-row{display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap}
+      .trust-logo-item{filter:grayscale(1);opacity:.32;transition:filter .3s,opacity .3s;cursor:default;padding:6px 12px;border-radius:4px}
+      .trust-logo-item:hover{filter:none;opacity:1}
+      .trust-logo-text{font-family:var(--font-head);font-size:15px;font-weight:800;color:var(--logo-color,#fff);white-space:nowrap;letter-spacing:.02em}
+    `;
+    document.head.appendChild(s);
+  }, []);
+
+  const logos = [
+    { name: 'Grundner GmbH',       color: '#2563eb' },
+    { name: 'Schmuckkultur',        color: '#d97706' },
+    { name: 'Dr. Derya',            color: '#059669' },
+    { name: 'CityEvents',           color: '#dc2626' },
+    { name: 'Stefanie Kosmalla',    color: '#7c3aed' },
+  ];
+
+  return (
+    <section className="trust-logo-section">
+      <p className="trust-logo-label">Vertrauen von Unternehmen aus dem DACH-Raum</p>
+      <div className="trust-logo-row">
+        {logos.map(l => (
+          <div key={l.name} className="trust-logo-item" style={{'--logo-color': l.color}}>
+            <span className="trust-logo-text">{l.name}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ─── Marquee ─────────────────────────────────────────────────────────────────
 function MarqueeSection() {
   return (
@@ -60,7 +98,6 @@ function FeaturesSection({ navigate }) {
     { num:'02', title:'Webdesign', desc:'Websites, die nicht nur gut aussehen, sondern konvertieren. Individuell auf Framer entwickelt, schnell geliefert.', page:'webdesign' },
     { num:'03', title:'SEO & GEO', desc:'Sichtbarkeit in klassischen Suchmaschinen und KI-Suchen wie ChatGPT, Perplexity & Google SGE.', page:'seo' },
   ];
-
   return (
     <section className="section features-section">
       <Reveal><p className="section-label">{ '{ Was wir machen }' }</p></Reveal>
@@ -69,9 +106,7 @@ function FeaturesSection({ navigate }) {
         {cards.map((c, i) => (
           <Reveal key={c.num} delay={i * 120} className="feature-card-wrap">
             <div className="feature-card" onClick={() => navigate(c.page)} data-hover>
-              <div className="feature-card-top">
-                <span className="feature-num">{`{ ${c.num} }`}</span>
-              </div>
+              <div className="feature-card-top"><span className="feature-num">{`{ ${c.num} }`}</span></div>
               <h3 className="feature-title">{c.title}</h3>
               <p className="feature-desc">{c.desc}</p>
               <span className="feature-link">Mehr erfahren →</span>
@@ -86,47 +121,28 @@ function FeaturesSection({ navigate }) {
 // ─── KI Section ──────────────────────────────────────────────────────────────
 function WorkflowSVG() {
   const nodes = [
-    { x: 20, y: 40, w: 120, h: 48, label: 'Lead Eingang', sub: 'Web / CRM' },
-    { x: 210, y: 40, w: 120, h: 48, label: 'KI Analyse', sub: 'ChatGPT API' },
-    { x: 400, y: 40, w: 120, h: 48, label: 'CRM Update', sub: 'HubSpot' },
-    { x: 210, y: 160, w: 120, h: 48, label: 'E-Mail Seq.', sub: 'Make / n8n' },
-    { x: 400, y: 160, w: 120, h: 48, label: 'Slack Alert', sub: 'Webhook' },
-    { x: 210, y: 280, w: 120, h: 48, label: 'Reporting', sub: 'Notion / Sheet' },
+    { x:20, y:40, w:120, h:48, label:'Lead Eingang', sub:'Web / CRM' },
+    { x:210, y:40, w:120, h:48, label:'KI Analyse', sub:'ChatGPT API' },
+    { x:400, y:40, w:120, h:48, label:'CRM Update', sub:'HubSpot' },
+    { x:210, y:160, w:120, h:48, label:'E-Mail Seq.', sub:'Make / n8n' },
+    { x:400, y:160, w:120, h:48, label:'Slack Alert', sub:'Webhook' },
+    { x:210, y:280, w:120, h:48, label:'Reporting', sub:'Notion / Sheet' },
   ];
-  const edges = [
-    [80+120, 64, 210, 64],
-    [210+120, 64, 400, 64],
-    [210+60, 40+48, 210+60, 160],
-    [210+120, 184, 400, 184],
-    [210+60, 160+48, 210+60, 280],
-  ];
-
+  const edges = [[200,64,210,64],[330,64,400,64],[270,88,270,160],[330,184,400,184],[270,208,270,280]];
   return (
     <svg viewBox="0 0 560 360" className="workflow-svg" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
-        <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-          <path d="M0,0 L6,3 L0,6 Z" fill="currentColor" />
-        </marker>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+        <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor" /></marker>
       </defs>
-      {edges.map(([x1,y1,x2,y2], i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-          stroke="currentColor" strokeWidth="1.5" strokeDasharray="8 5"
-          markerEnd="url(#arr)" opacity="0.7"
-          style={{ animation: `dashFlow ${1.8 + i * 0.2}s linear infinite` }} />
+      {edges.map(([x1,y1,x2,y2],i) => (
+        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="1.5" strokeDasharray="8 5" markerEnd="url(#arr)" opacity="0.7" style={{animation:`dashFlow ${1.8+i*.2}s linear infinite`}} />
       ))}
-      {nodes.map((n, i) => (
-        <g key={i} style={{ animation: `nodePulse ${2 + i * 0.3}s ease-in-out infinite alternate` }}>
-          <rect x={n.x} y={n.y} width={n.w} height={n.h} rx="6"
-            fill="#141414" stroke="currentColor" strokeWidth="1"
-            filter="url(#glow)" opacity="0.9" />
-          <text x={n.x + n.w/2} y={n.y + 18} textAnchor="middle"
-            fill="#fff" fontSize="11" fontFamily="DM Sans, sans-serif" fontWeight="500">{n.label}</text>
-          <text x={n.x + n.w/2} y={n.y + 34} textAnchor="middle"
-            fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="DM Sans, sans-serif">{n.sub}</text>
+      {nodes.map((n,i) => (
+        <g key={i} style={{animation:`nodePulse ${2+i*.3}s ease-in-out infinite alternate`}}>
+          <rect x={n.x} y={n.y} width={n.w} height={n.h} rx="6" fill="#141414" stroke="currentColor" strokeWidth="1" filter="url(#glow)" opacity="0.9" />
+          <text x={n.x+n.w/2} y={n.y+18} textAnchor="middle" fill="#fff" fontSize="11" fontFamily="DM Sans, sans-serif" fontWeight="500">{n.label}</text>
+          <text x={n.x+n.w/2} y={n.y+34} textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="DM Sans, sans-serif">{n.sub}</text>
         </g>
       ))}
     </svg>
@@ -149,12 +165,9 @@ function KISection({ navigate }) {
           <Reveal delay={80}><h2 className="section-h2" style={{fontSize:'clamp(40px,5vw,72px)'}}>Schluss mit<br/>manuellem Aufwand.</h2></Reveal>
           <Reveal delay={160}><p className="body-lg" style={{color:'var(--muted)',marginBottom:'2rem'}}>Wir bauen dir KI-Workflows, die rund um die Uhr für dich arbeiten — ganz ohne deinen Input.</p></Reveal>
           <div className="ki-features">
-            {features.map((f, i) => (
-              <Reveal key={i} delay={200 + i * 80}>
-                <div className="ki-feat-item">
-                  <span className="ki-check">✓</span>
-                  <span>{f}</span>
-                </div>
+            {features.map((f,i) => (
+              <Reveal key={i} delay={200+i*80}>
+                <div className="ki-feat-item"><span className="ki-check">✓</span><span>{f}</span></div>
               </Reveal>
             ))}
           </div>
@@ -162,9 +175,7 @@ function KISection({ navigate }) {
             <button className="btn-primary" style={{marginTop:'2.5rem'}} onClick={() => navigate('ki')}>KI-Automatisierung anfragen →</button>
           </Reveal>
         </div>
-        <Reveal delay={200} className="ki-visual">
-          <WorkflowSVG />
-        </Reveal>
+        <Reveal delay={200} className="ki-visual"><WorkflowSVG /></Reveal>
       </div>
     </section>
   );
@@ -183,22 +194,13 @@ function ProjectCard({ project, delay }) {
   const [hov, setHov] = React.useState(false);
   return (
     <Reveal delay={delay} className="project-card-wrap">
-      <div className={`project-card ${hov ? 'card-hov' : ''}`}
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
-        data-hover>
+      <div className={`project-card ${hov?'card-hov':''}`} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} data-hover>
         <div className="project-img">
           <svg width="100%" height="100%" style={{position:'absolute',inset:0}}>
-            <defs>
-              <pattern id={`pp${project.name.replace(/\s/g,'')}`} patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(25)">
-                <rect width="10" height="20" fill="#111" /><rect x="10" width="10" height="20" fill="#0d0d0d" />
-              </pattern>
-            </defs>
+            <defs><pattern id={`pp${project.name.replace(/\s/g,'')}`} patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(25)"><rect width="10" height="20" fill="#111" /><rect x="10" width="10" height="20" fill="#0d0d0d" /></pattern></defs>
             <rect width="100%" height="100%" fill={`url(#pp${project.name.replace(/\s/g,'')})`} />
           </svg>
-          <div className={`project-overlay ${hov ? 'overlay-in' : ''}`}>
-            <span className="project-cta">Ansehen →</span>
-          </div>
+          <div className={`project-overlay ${hov?'overlay-in':''}`}><span className="project-cta">Ansehen →</span></div>
         </div>
         <div className="project-info">
           <div className="project-meta">
@@ -224,7 +226,7 @@ function ProjectsSection({ navigate }) {
         <Reveal delay={200}><span className="muted-text">2024 – 2025</span></Reveal>
       </div>
       <div className="projects-grid">
-        {PROJECTS.map((p, i) => <ProjectCard key={p.name} project={p} delay={i * 100} />)}
+        {PROJECTS.map((p,i) => <ProjectCard key={p.name} project={p} delay={i*100} />)}
       </div>
       <Reveal delay={200} style={{textAlign:'center',marginTop:'3rem'}}>
         <button className="btn-ghost" onClick={() => navigate && navigate('contact')}>Alle Projekte ansehen →</button>
@@ -246,8 +248,8 @@ function ProcessSection() {
       <Reveal><p className="section-label">{ '{ Wie wir arbeiten }' }</p></Reveal>
       <Reveal delay={80}><h2 className="section-h2">Vom Erstgespräch<br/>zur laufenden Automation</h2></Reveal>
       <div className="process-track">
-        {steps.map((s, i) => (
-          <Reveal key={s.num} delay={i * 150} className="process-step-wrap">
+        {steps.map((s,i) => (
+          <Reveal key={s.num} delay={i*150} className="process-step-wrap">
             <div className="process-step">
               <div className="process-num">{s.num}</div>
               <div className="process-line" />
@@ -271,18 +273,13 @@ const TESTIMONIALS = [
 function TestimonialsSection() {
   const [active, setActive] = React.useState(0);
   const t = TESTIMONIALS[active];
-
   return (
     <section className="section testimonials-section">
       <Reveal><p className="section-label">{ '{ Was Kunden sagen }' }</p></Reveal>
       <div className="testimonial-body">
         <div className="testimonial-photo">
           <svg width="100%" height="100%" style={{position:'absolute',inset:0}}>
-            <defs>
-              <pattern id="tpp" patternUnits="userSpaceOnUse" width="16" height="16" patternTransform="rotate(45)">
-                <rect width="8" height="16" fill="#111" /><rect x="8" width="8" height="16" fill="#0e0e0e" />
-              </pattern>
-            </defs>
+            <defs><pattern id="tpp" patternUnits="userSpaceOnUse" width="16" height="16" patternTransform="rotate(45)"><rect width="8" height="16" fill="#111" /><rect x="8" width="8" height="16" fill="#0e0e0e" /></pattern></defs>
             <rect width="100%" height="100%" fill="url(#tpp)" />
           </svg>
           <div className="photo-label-inner">Portrait</div>
@@ -302,8 +299,8 @@ function TestimonialsSection() {
           <p className="testimonial-name">{t.name}</p>
           <p className="testimonial-role">{t.role}</p>
           <div className="testimonial-dots">
-            {TESTIMONIALS.map((_, i) => (
-              <button key={i} className={`dot ${i === active ? 'dot-active' : ''}`} onClick={() => setActive(i)} />
+            {TESTIMONIALS.map((_,i) => (
+              <button key={i} className={`dot ${i===active?'dot-active':''}`} onClick={() => setActive(i)} />
             ))}
           </div>
         </div>
@@ -315,19 +312,19 @@ function TestimonialsSection() {
 // ─── Pricing ──────────────────────────────────────────────────────────────────
 const PRICING = {
   webdesign: [
-    { tier:'Starter', price:'1.250', desc:'Perfekt für Einzelunternehmer & kleine Firmen.', features:['Bis zu 5 Seiten','Framer-basiert','Mobile-optimiert','SEO-Grundlagen','2 Revisionsrunden'], popular:false },
-    { tier:'Business', price:'3.000', desc:'Für wachsende Unternehmen mit Conversion-Ziel.', features:['Bis zu 12 Seiten','Individuelle Animationen','Blog / CMS','A/B Testing Setup','Conversion-Optimierung','4 Revisionsrunden'], popular:true },
-    { tier:'Premium', price:'6.500', desc:'Volle Leistung — Branding bis Automation.', features:['Unbegrenzt Seiten','Brand Identity System','KI-Chatbot inklusive','SEO & GEO inklusive','Priority Support','Laufende Betreuung'], popular:false },
+    { tier:'Starter', price:'1.250', note:'Festpreis ohne versteckte Kosten', desc:'Perfekt für Einzelunternehmer & kleine Firmen.', features:['Bis zu 5 Seiten','Framer-basiert','Mobile-optimiert','SEO-Grundlagen','2 Revisionsrunden'], popular:false },
+    { tier:'Business', price:'3.000', note:'Festpreis ohne versteckte Kosten', desc:'Für wachsende Unternehmen mit Conversion-Ziel.', features:['Bis zu 12 Seiten','Individuelle Animationen','Blog / CMS','A/B Testing Setup','Conversion-Optimierung','4 Revisionsrunden'], popular:true },
+    { tier:'Premium', price:'6.500', note:'Festpreis ohne versteckte Kosten', desc:'Volle Leistung — Branding bis Automation.', features:['Unbegrenzt Seiten','Brand Identity System','KI-Chatbot inklusive','SEO & GEO inklusive','Priority Support','Laufende Betreuung'], popular:false },
   ],
   ki: [
-    { tier:'Starter', price:'990', desc:'Erster KI-Workflow für dein Unternehmen.', features:['1 automatisierter Workflow','n8n oder Make','CRM-Integration','2 Wochen Betreuung','Dokumentation'], popular:false },
-    { tier:'Business', price:'2.800', desc:'Vollständige Automatisierung deines Lead-Prozesses.', features:['Bis zu 5 Workflows','Lead-Qualifizierung','E-Mail-Automatisierung','CRM + Slack','Reporting Dashboard','Monatliches Review'], popular:true },
-    { tier:'Premium', price:'5.500', desc:'KI-First Unternehmen — end-to-end.', features:['Unbegrenzte Workflows','Custom KI-Modell','Chatbot + Voicebot','Vollständige Integration','24h Support SLA','Quartals-Strategy'], popular:false },
+    { tier:'Starter', price:'990', note:'Monatlich kündbar', desc:'Erster KI-Workflow für dein Unternehmen.', features:['1 automatisierter Workflow','n8n oder Make','CRM-Integration','2 Wochen Betreuung','Dokumentation'], popular:false },
+    { tier:'Business', price:'2.800', note:'Monatlich kündbar', desc:'Vollständige Automatisierung deines Lead-Prozesses.', features:['Bis zu 5 Workflows','Lead-Qualifizierung','E-Mail-Automatisierung','CRM + Slack','Reporting Dashboard','Monatliches Review'], popular:true },
+    { tier:'Premium', price:'5.500', note:'Monatlich kündbar', desc:'KI-First Unternehmen — end-to-end.', features:['Unbegrenzte Workflows','Custom KI-Modell','Chatbot + Voicebot','Vollständige Integration','24h Support SLA','Quartals-Strategy'], popular:false },
   ],
   seo: [
-    { tier:'Starter', price:'490 /mo', desc:'Sichtbarkeit aufbauen — nachhaltig und messbar.', features:['Keyword-Recherche','OnPage-Optimierung','Monthly Report','Local SEO'], popular:false },
-    { tier:'Business', price:'1.200 /mo', desc:'Organisches Wachstum als verlässlicher Kanal.', features:['Content-Strategie','Backlink-Building','Technical SEO','Google Search Console','Wöchentlicher Report'], popular:true },
-    { tier:'Premium', price:'2.400 /mo', desc:'Marktführerschaft durch Sichtbarkeit.', features:['Alles aus Business','GEO inklusive','Dedizierter SEO Manager','Priority Indexing','KI-Suchen Optimierung'], popular:false },
+    { tier:'Starter', price:'490 /mo', note:'Erste Ergebnisse in 4 Wochen oder Geld zurück', desc:'Sichtbarkeit aufbauen — nachhaltig und messbar.', features:['Keyword-Recherche','OnPage-Optimierung','Monthly Report','Local SEO'], popular:false },
+    { tier:'Business', price:'1.200 /mo', note:'Erste Ergebnisse in 4 Wochen oder Geld zurück', desc:'Organisches Wachstum als verlässlicher Kanal.', features:['Content-Strategie','Backlink-Building','Technical SEO','Google Search Console','Wöchentlicher Report'], popular:true },
+    { tier:'Premium', price:'2.400 /mo', note:'Erste Ergebnisse in 4 Wochen oder Geld zurück', desc:'Marktführerschaft durch Sichtbarkeit.', features:['Alles aus Business','GEO inklusive','Dedizierter SEO Manager','Priority Indexing','KI-Suchen Optimierung'], popular:false },
   ],
 };
 
@@ -336,6 +333,19 @@ function PricingSection({ navigate }) {
   const plans = PRICING[tab];
   const tabs = [['webdesign','Webdesign'],['ki','KI-Automatisierung'],['seo','SEO-Pakete']];
 
+  React.useEffect(() => {
+    if (document.getElementById('wa-pricing-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'wa-pricing-styles';
+    s.textContent = `
+      .pricing-note{font-size:11px;color:var(--muted);text-align:center;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:.35rem}
+      .pricing-note-check{color:#4ade80;font-weight:700}
+      .btn-link{background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--font-body);font-size:14px;text-decoration:underline;text-underline-offset:3px;transition:color .2s;padding:0}
+      .btn-link:hover{color:var(--text)}
+    `;
+    document.head.appendChild(s);
+  }, []);
+
   return (
     <section className="section pricing-section">
       <Reveal><p className="section-label">{ '{ Preise }' }</p></Reveal>
@@ -343,26 +353,32 @@ function PricingSection({ navigate }) {
       <Reveal delay={160}>
         <div className="pricing-tabs">
           {tabs.map(([k,l]) => (
-            <button key={k} className={`pricing-tab ${tab === k ? 'tab-active' : ''}`} onClick={() => setTab(k)}>{l}</button>
+            <button key={k} className={`pricing-tab ${tab===k?'tab-active':''}`} onClick={() => setTab(k)}>{l}</button>
           ))}
         </div>
       </Reveal>
       <div className="pricing-grid">
-        {plans.map((p, i) => (
-          <Reveal key={p.tier} delay={i * 120} className="pricing-card-wrap">
-            <div className={`pricing-card ${p.popular ? 'pricing-popular' : ''}`}>
+        {plans.map((p,i) => (
+          <Reveal key={p.tier} delay={i*120} className="pricing-card-wrap">
+            <div className={`pricing-card ${p.popular?'pricing-popular':''}`}>
               {p.popular && <div className="popular-badge">Am beliebtesten</div>}
               <div className="pricing-tier">{p.tier}</div>
-              <div className="pricing-price">€{p.price}</div>
+              <div className="pricing-price">Ab €{p.price}</div>
               <p className="pricing-desc">{p.desc}</p>
               <ul className="pricing-features">
                 {p.features.map(f => <li key={f}><span className="pf-check">✓</span>{f}</li>)}
               </ul>
-              <button className={p.popular ? 'btn-primary' : 'btn-outline'} style={{width:'100%',marginTop:'auto'}} onClick={() => navigate && navigate('contact')}>Anfragen →</button>
+              {p.note && <p className="pricing-note"><span className="pricing-note-check">✓</span>{p.note}</p>}
+              <button className={p.popular?'btn-primary':'btn-outline'} style={{width:'100%',marginTop:'1rem'}} onClick={() => navigate && navigate('contact')}>Anfragen →</button>
             </div>
           </Reveal>
         ))}
       </div>
+      <Reveal delay={200} style={{textAlign:'center',marginTop:'2.5rem'}}>
+        <button className="btn-link" onClick={() => navigate && navigate('contact')}>
+          Nicht das richtige dabei? Individuelles Angebot anfordern →
+        </button>
+      </Reveal>
     </section>
   );
 }
@@ -375,6 +391,9 @@ const FAQS = [
   { q:'Arbeitet ihr mit kleinen Unternehmen?', a:'Ja. Unsere Zielgruppe sind ambitionierte KMUs im DACH-Raum. Groß denken, schlank umsetzen — das ist unser Ansatz.' },
   { q:'Gibt es laufende Betreuung nach dem Launch?', a:'Abhängig vom Paket. Business und Premium beinhalten laufendes Monitoring, Optimierung und Support. Starter-Pakete können jederzeit erweitert werden.' },
   { q:'Was ist der Unterschied zwischen SEO und GEO?', a:'SEO optimiert für klassische Suchmaschinen wie Google. GEO (Generative Engine Optimization) sorgt dafür, dass dein Unternehmen von KI-Systemen wie ChatGPT, Perplexity und Claude empfohlen wird.' },
+  { q:'Was passiert, wenn ich nicht zufrieden bin?', a:'Wir arbeiten mit transparenten Meilensteinen. Bei jedem Schritt entscheidest du, ob wir weitermachen. Nach 14 Tagen gibst du uns ehrliches Feedback — wenn es nicht passt, gehen wir auseinander, kein Drama.' },
+  { q:'Bindet ihr mich an einen langfristigen Vertrag?', a:'Nein. Webdesign-Projekte sind Einmalleistungen. KI-Automatisierung und SEO sind monatlich kündbar. Du bist nie länger als einen Monat gebunden.' },
+  { q:'Kann ich die Website später selbst pflegen?', a:'Ja. Wir übergeben die Website mit einer kurzen Einführung. Du kannst Texte, Bilder und Inhalte selbst ändern. Komplexere Änderungen übernehmen wir auf Wunsch.' },
 ];
 
 function FAQSection() {
@@ -384,21 +403,16 @@ function FAQSection() {
       <Reveal><p className="section-label">{ '{ FAQ }' }</p></Reveal>
       <Reveal delay={80}><h2 className="section-h2" style={{marginBottom:'3rem'}}>Häufige Fragen.</h2></Reveal>
       <div className="faq-list">
-        {FAQS.map((f, i) => {
+        {FAQS.map((f,i) => {
           const isOpen = open === i;
           return (
-            <Reveal key={i} delay={i * 60}>
-              <div className={`faq-item ${isOpen ? 'faq-open' : ''}`}>
-                <button
-                  className="faq-q"
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  aria-expanded={isOpen}
-                  aria-controls={`faq-a-${i}`}
-                >
+            <Reveal key={i} delay={i*50}>
+              <div className={`faq-item ${isOpen?'faq-open':''}`}>
+                <button className="faq-q" onClick={() => setOpen(isOpen?null:i)} aria-expanded={isOpen} aria-controls={`faq-a-${i}`}>
                   <span>{f.q}</span>
-                  <span className="faq-icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                  <span className="faq-icon" aria-hidden="true">{isOpen?'−':'+'}</span>
                 </button>
-                <div id={`faq-a-${i}`} className="faq-a-wrap" style={{maxHeight: isOpen ? '400px' : '0', overflow:'hidden', transition:'max-height .4s ease'}}>
+                <div id={`faq-a-${i}`} className="faq-a-wrap" style={{maxHeight:isOpen?'400px':'0',overflow:'hidden',transition:'max-height .4s ease'}}>
                   <div className="faq-a">{f.a}</div>
                 </div>
               </div>
@@ -417,15 +431,18 @@ function ClosingCTA({ navigate }) {
     const s = document.createElement('style');
     s.id = 'wa-cta-styles';
     s.textContent = `
-      /* Sky gradient identical to hero so clouds get the same colour */
       .closing-cta{background:linear-gradient(180deg,#04070f 0%,#060d24 28%,var(--accent) 68%,var(--bg) 100%)!important}
-      /* Strengthen glow to match hero atmosphere */
       .closing-glow{background:radial-gradient(ellipse at 50% 60%,var(--accent) 0%,rgba(0,0,0,0) 65%)!important;opacity:.55;animation:glowPulse 5s ease-in-out infinite alternate}
       @keyframes glowPulse{0%{opacity:.35;transform:scale(1) translateX(-50%)}100%{opacity:.7;transform:scale(1.2) translateX(-42%)}}
-      /* Hero-identical cloud divs */
       .cta-cloud-left,.cta-cloud-right{position:absolute;width:130%;height:640px;bottom:-200px;background-image:url('assets/cloud.png');background-size:contain;background-repeat:no-repeat;background-position:center top;opacity:0;pointer-events:none;z-index:1}
       .cta-cloud-left{left:-55%;animation:cloudInLeft 1.4s ease 0.3s both,cloudDriftL 11s ease-in-out 1.7s infinite}
       .cta-cloud-right{right:-55%;animation:cloudInRight 1.4s ease 0.3s both,cloudDriftR 14s ease-in-out 2.2s infinite}
+      .cta-trust-row{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin:1.5rem 0}
+      .cta-trust-row span{font-size:14px;color:rgba(255,255,255,.75);display:flex;align-items:center;gap:.4rem}
+      .cta-check{color:#4ade80;font-weight:700;font-size:16px}
+      .cta-dual-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+      .cta-dual-btns a{display:inline-flex;align-items:center;text-decoration:none}
+      .cta-microcopy{font-size:12px;color:rgba(255,255,255,.3);margin-top:1.75rem;letter-spacing:.03em}
     `;
     document.head.appendChild(s);
   }, []);
@@ -434,46 +451,42 @@ function ClosingCTA({ navigate }) {
     <section className="closing-cta" style={{overflow:'hidden'}}>
       <div className="cta-cloud-left" />
       <div className="cta-cloud-right" />
-
       <div className="closing-bg">
         <div className="closing-glow" />
       </div>
-
       <div className="closing-content">
         <Reveal><h2 className="closing-h">Bereit, smarter<br/>zu wachsen?</h2></Reveal>
-        <Reveal delay={150}><p className="closing-sub">Kostenloses Erstgespräch — 30 Minuten, kein Pitch, nur Klarheit.</p></Reveal>
-        <Reveal delay={280}><button className="btn-primary btn-xl" onClick={() => navigate('contact')}>Termin buchen →</button></Reveal>
+        <Reveal delay={120}><p className="closing-sub">Kostenloses Erstgespräch — 30 Minuten, kein Pitch, nur Klarheit.</p></Reveal>
+        <Reveal delay={220}>
+          <div className="cta-trust-row">
+            <span><span className="cta-check">✓</span>Antwort innerhalb 24h</span>
+            <span><span className="cta-check">✓</span>Kein Verkaufsdruck</span>
+            <span><span className="cta-check">✓</span>DSGVO-konform</span>
+          </div>
+        </Reveal>
+        <Reveal delay={320}>
+          <div className="cta-dual-btns">
+            <button className="btn-primary btn-xl" onClick={() => navigate('contact')}>Termin buchen →</button>
+            <a href="tel:+436703061078" className="btn-ghost btn-xl">+43 670 3061078</a>
+          </div>
+        </Reveal>
+        <Reveal delay={420}>
+          <p className="cta-microcopy">Bereits über 50 Unternehmen vertrauen WebArs · ★ 4.9/5 Trustpilot</p>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-// ─── HomePage ────────────────────────────────────────────────────────────────
-function HomePage({ navigate }) {
-  return (
-    <main>
-      <HeroSection navigate={navigate} />
-      <MarqueeSection />
-      <FeaturesSection navigate={navigate} />
-      <KISection navigate={navigate} />
-      <ProjectsSection navigate={navigate} />
-      <ProcessSection />
-      <TestimonialsSection />
-      <ComparisonSection />
-      <FAQSection />
-      <ClosingCTA navigate={navigate} />
-    </main>
-  );
-}
-
+// ─── Comparison ────────────────────────────────────────────────────────────────
 function ComparisonSection() {
   const rows = [
-    { label:'Reaktionszeit',       wa:'24h',       free:'variabel',   big:'1–2 Wochen' },
-    { label:'Lieferzeit',          wa:'2–3 Wochen',free:'variabel',   big:'2–3 Monate' },
-    { label:'KI-Automatisierung',  wa:'✓',         free:'selten',     big:'teuer extra' },
-    { label:'Persönlicher Kontakt',wa:'✓',         free:'✓',          big:'✗' },
-    { label:'Büro Wien & Frankfurt',wa:'✓',        free:'✗',          big:'✗' },
-    { label:'Faire Preise',        wa:'✓',         free:'✓',          big:'✗' },
+    { label:'Reaktionszeit',        wa:'24h',          free:'variabel',   big:'1–2 Wochen' },
+    { label:'Lieferzeit',           wa:'2–3 Wochen',  free:'variabel',   big:'2–3 Monate' },
+    { label:'KI-Automatisierung',   wa:'✓',            free:'selten',     big:'teuer extra' },
+    { label:'Persönlicher Kontakt', wa:'✓',            free:'✓',          big:'✗' },
+    { label:'Büro Wien & Frankfurt',wa:'✓',            free:'✗',          big:'✗' },
+    { label:'Faire Preise',         wa:'✓',            free:'✓',          big:'✗' },
   ];
   return (
     <section className="section comparison-section">
@@ -499,6 +512,26 @@ function ComparisonSection() {
         <p className="comp-note">Persönlicher Ansprechpartner in Wien & Frankfurt. Kein anonymes Ticketsystem, keine Offshore-Teams — nur direkte Kommunikation und nachweisbare Ergebnisse.</p>
       </Reveal>
     </section>
+  );
+}
+
+// ─── HomePage ────────────────────────────────────────────────────────────────
+function HomePage({ navigate }) {
+  return (
+    <main>
+      <HeroSection navigate={navigate} />
+      <TrustLogoSection />
+      <MarqueeSection />
+      <FeaturesSection navigate={navigate} />
+      <KISection navigate={navigate} />
+      <ProjectsSection navigate={navigate} />
+      <ProcessSection />
+      <TestimonialsSection />
+      <ComparisonSection />
+      <PricingSection navigate={navigate} />
+      <FAQSection />
+      <ClosingCTA navigate={navigate} />
+    </main>
   );
 }
 
