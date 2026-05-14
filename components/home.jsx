@@ -4,7 +4,6 @@ function HeroSection({ navigate }) {
   const [linesIn, setLinesIn] = React.useState(0);
 
   React.useEffect(() => {
-    // Global layout system
     if (!document.getElementById('wa-global-layout')) {
       const g = document.createElement('style');
       g.id = 'wa-global-layout';
@@ -356,7 +355,7 @@ function OfferProcessSection({ navigate }) {
     s.textContent = `
       .offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:900px;margin:0 auto}
       @media(max-width:640px){.offer-grid{grid-template-columns:1fr}}
-      .offer-card{border:1px solid var(--border);border-radius:14px;padding:2rem 2rem 1.75rem;position:relative;background:var(--surface);transition:border-color .3s,transform .35s;overflow:hidden;text-align:left}
+      .offer-card{border:1px solid var(--border);border-radius:14px;padding:2rem 2rem 1.75rem;position:relative;background:var(--surface);transition:border-color .3s,transform .35s;overflow:hidden;text-align:center}
       .offer-card:hover{border-color:var(--accent);transform:translateY(-4px)}
       .offer-card.offer-highlight{border-color:var(--accent);background:linear-gradient(135deg,rgba(24,64,255,.07) 0%,var(--surface) 100%)}
       .offer-step-num{font-family:var(--font-display);font-size:88px;line-height:1;color:var(--accent);opacity:.12;position:absolute;bottom:-.5rem;right:1rem;pointer-events:none;user-select:none;transition:opacity .3s}
