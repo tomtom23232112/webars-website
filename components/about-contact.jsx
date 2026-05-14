@@ -5,19 +5,20 @@ function AboutPage({ navigate }) {
     const s = document.createElement('style');
     s.id = 'wa-about-styles';
     s.textContent = `
-      /* Hero */
-      .about-hero{padding:clamp(140px,18vw,220px) var(--px,40px) clamp(60px,8vw,100px);border-bottom:1px solid var(--border)}
-      .about-hero-inner{max-width:900px}
+      /* Hero — centered */
+      .about-hero{padding:clamp(140px,18vw,220px) var(--px,40px) clamp(60px,8vw,100px);border-bottom:1px solid var(--border);text-align:center}
+      .about-hero-inner{max-width:860px;margin:0 auto}
       .about-hero-h1{font-family:var(--font-display);font-size:clamp(64px,12vw,160px);line-height:.9;letter-spacing:.02em;text-transform:uppercase;margin:.75rem 0 2rem}
-      .about-hero-sub{font-size:clamp(15px,1.3vw,18px);color:var(--muted);line-height:1.7;max-width:560px}
-      .about-accent-line{width:48px;height:3px;background:var(--accent);border-radius:2px;margin:1.5rem 0}
+      .about-hero-sub{font-size:clamp(15px,1.3vw,18px);color:var(--muted);line-height:1.7;max-width:520px;margin:0 auto}
+      .about-accent-line{width:48px;height:3px;background:var(--accent);border-radius:2px;margin:1.5rem auto}
+      .about-hero .section-label{justify-content:center}
       /* Stats row */
-      .about-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:3.5rem}
-      .about-stat{padding:1.75rem 1.5rem;border-right:1px solid var(--border);background:var(--surface)}
+      .about-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:3.5rem}
+      .about-stat{padding:1.75rem 1.5rem;border-right:1px solid var(--border);background:var(--surface);text-align:left}
       .about-stat:last-child{border-right:none}
       .about-stat-val{font-family:var(--font-display);font-size:clamp(36px,4.5vw,60px);color:var(--accent);line-height:1;display:block}
       .about-stat-lbl{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:.4rem;display:block}
-      @media(max-width:640px){.about-stats{grid-template-columns:repeat(2,1fr)}.about-stat:nth-child(2){border-right:none}.about-stat:nth-child(3){border-top:1px solid var(--border)}.about-stat:nth-child(4){border-top:1px solid var(--border);border-right:none}}
+      @media(max-width:540px){.about-stats{grid-template-columns:1fr}.about-stat{border-right:none;border-bottom:1px solid var(--border)}.about-stat:last-child{border-bottom:none}}
       /* Timeline */
       .about-timeline{display:flex;flex-direction:column;max-width:720px}
       .timeline-item{display:grid;grid-template-columns:140px 2px 1fr;gap:0 2rem;align-items:start;padding-bottom:3rem}
@@ -42,7 +43,6 @@ function AboutPage({ navigate }) {
   ];
 
   const stats = [
-    { val:'50+', lbl:'Projekte abgeschlossen' },
     { val:'4.9', lbl:'Sterne Trustpilot' },
     { val:'2–3', lbl:'Wochen Lieferzeit' },
     { val:'24h', lbl:'Reaktionszeit' },
@@ -57,7 +57,7 @@ function AboutPage({ navigate }) {
 
   return (
     <main>
-      {/* Hero — clean, no sky */}
+      {/* Hero */}
       <section className="about-hero">
         <div className="about-hero-inner">
           <Reveal><p className="section-label">{ '{ Über uns }' }</p></Reveal>
@@ -86,9 +86,7 @@ function AboutPage({ navigate }) {
 
       {/* Quote */}
       <section className="section" style={{borderBottom:'1px solid var(--border)'}}>
-        <Reveal>
-          <p className="section-label">{ '{ Unsere Haltung }' }</p>
-        </Reveal>
+        <Reveal><p className="section-label">{ '{ Unsere Haltung }' }</p></Reveal>
         <Reveal delay={100}>
           <h2 className="section-h2" style={{maxWidth:'760px',marginTop:'.75rem'}}>
             „Wir bauen keine schönen Websites.<br/>
@@ -112,9 +110,7 @@ function AboutPage({ navigate }) {
           {usps.map(([title, desc], i) => (
             <Reveal key={title} delay={i * 100} className="feature-card-wrap">
               <div className="feature-card">
-                <div className="feature-card-top">
-                  <span className="feature-num">{`{ 0${i+1} }`}</span>
-                </div>
+                <div className="feature-card-top"><span className="feature-num">{`{ 0${i+1} }`}</span></div>
                 <h3 className="feature-title">{title}</h3>
                 <p className="feature-desc">{desc}</p>
               </div>

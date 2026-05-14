@@ -1,4 +1,4 @@
-// ─── Mobile Sticky Bar ─────────────────────────────────────────────────────────
+// ─── Mobile Sticky Bar ────────────────────────────────────────────────────────────────
 function MobileStickyBar({ onContact }) {
   const [visible, setVisible] = React.useState(false);
 
@@ -33,16 +33,15 @@ function MobileStickyBar({ onContact }) {
   );
 }
 
-// ─── WhatsApp Button ────────────────────────────────────────────────────────────
+// ─── WhatsApp Button ──────────────────────────────────────────────────────────────────
 function WhatsAppButton() {
   React.useEffect(() => {
     if (document.getElementById('wa-whatsapp-styles')) return;
     const s = document.createElement('style');
     s.id = 'wa-whatsapp-styles';
     s.textContent = `
-      .wa-float{position:fixed;right:24px;bottom:24px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.45);animation:waPulse 4.5s ease-in-out infinite;transition:transform .2s}
-      .wa-float:hover{transform:scale(1.1);animation:none}
-      @keyframes waPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.45)}55%{box-shadow:0 4px 32px rgba(37,211,102,.75),0 0 0 10px rgba(37,211,102,.1)}}
+      .wa-float{position:fixed;right:24px;bottom:24px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.35);transition:transform .2s,box-shadow .2s}
+      .wa-float:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(37,211,102,.55)}
       @media(max-width:768px){.wa-float{bottom:84px}}
     `;
     document.head.appendChild(s);
@@ -64,7 +63,7 @@ function WhatsAppButton() {
   );
 }
 
-// ─── Exit-Intent Popup ────────────────────────────────────────────────────────
+// ─── Exit-Intent Popup ────────────────────────────────────────────────────────────────
 function ExitIntentPopup({ onContact }) {
   const [show, setShow] = React.useState(false);
   const [closing, setClosing] = React.useState(false);
@@ -196,7 +195,7 @@ function ExitIntentPopup({ onContact }) {
   );
 }
 
-// ─── WebArs Chatbot ───────────────────────────────────────────────────────────
+// ─── WebArs Chatbot ───────────────────────────────────────────────────────────────
 const WA_SYSTEM = `Du bist der KI-Assistent von WebArs, einer Digitalagentur aus Wien und Frankfurt. WebArs kombiniert KI-Automatisierung mit modernem Webdesign.
 
 Über WebArs:
@@ -206,26 +205,17 @@ const WA_SYSTEM = `Du bist der KI-Assistent von WebArs, einer Digitalagentur aus
 - Reaktionszeit: 24h
 - Ø 4.9 Sterne auf Trustpilot, 50+ Projekte
 
-Preise (Beispiele):
-- Webdesign Starter: ab €1.250 (bis 5 Seiten, Framer, mobile-optimiert)
-- Webdesign Business: ab €3.000 (bis 12 Seiten, Animationen, CMS)
-- Webdesign Premium: ab €6.500 (unbegrenzt, Brand Identity, KI-Chatbot)
-- KI-Automatisierung Starter: ab €990 (1 Workflow, n8n/Make)
-- KI-Automatisierung Business: ab €2.800 (bis 5 Workflows, Lead-Prozess)
-- KI-Automatisierung Premium: ab €5.500 (unbegrenzt, Custom KI-Modell)
-- SEO ab €490/Monat
-
 Verhalten:
 - Antworte auf Deutsch, freundlich und direkt
 - Halte Antworten kurz (max. 3-4 Sätze)
-- Wenn jemand konkret Interesse zeigt, empfehle ein kostenloses Erstgespräch: "Buche jetzt dein kostenloses 30-Minuten-Gespräch auf unserer Website."
+- Wenn jemand konkret Interesse zeigt, empfehle ein kostenloses Erstgespräch
 - Erfinde keine Informationen — wenn du etwas nicht weißt, sage das ehrlich
 - Du bist ein echtes Beispiel von WebArs' eigener KI-Kompetenz — erwähne das gerne subtil`;
 
 function WebArsChat() {
   const [open, setOpen] = React.useState(false);
   const [msgs, setMsgs] = React.useState([
-    { role: 'assistant', content: 'Hi! Ich bin der WebArs KI-Assistent — und ein live Beispiel für das was wir bauen 🤖\n\nWie kann ich dir helfen?' }
+    { role: 'assistant', content: 'Hi! Ich bin der WebArs KI-Assistent — und ein live Beispiel für das was wir bauen.\n\nWie kann ich dir helfen?' }
   ]);
   const [input, setInput] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -237,23 +227,30 @@ function WebArsChat() {
     const s = document.createElement('style');
     s.id = 'wa-chat-extra';
     s.textContent = `
-      @keyframes chatWiggle{0%,100%{transform:rotate(0) scale(1)}20%{transform:rotate(-10deg) scale(1.05)}40%{transform:rotate(10deg) scale(1.05)}60%{transform:rotate(-6deg) scale(1.02)}80%{transform:rotate(6deg) scale(1.02)}}
-      .wa-chat-toggle.wiggle{animation:chatWiggle .7s ease-in-out}
+      /* Subtle sway instead of vigorous shake */
+      @keyframes chatNudge{
+        0%,100%{transform:translateX(0) rotate(0)}
+        25%{transform:translateX(-3px) rotate(-2deg)}
+        75%{transform:translateX(3px) rotate(2deg)}
+      }
+      .wa-chat-toggle{animation:none!important;box-shadow:0 4px 18px rgba(0,0,0,.45)!important}
+      .wa-chat-toggle:hover{transform:scale(1.06)!important}
+      .wa-chat-toggle.wiggle{animation:chatNudge .9s ease-in-out!important}
       @media(max-width:768px){.wa-chat-wrap{bottom:152px!important}}
     `;
     document.head.appendChild(s);
   }, []);
 
-  // Wiggle every 45s — never auto-open
+  // Subtle nudge every 45s — never auto-open
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (open) return;
       const btn = toggleRef.current;
       if (!btn) return;
       btn.classList.remove('wiggle');
-      void btn.offsetWidth; // reflow to restart animation
+      void btn.offsetWidth;
       btn.classList.add('wiggle');
-      setTimeout(() => btn.classList.remove('wiggle'), 700);
+      setTimeout(() => btn.classList.remove('wiggle'), 900);
     }, 45000);
     return () => clearInterval(interval);
   }, [open]);

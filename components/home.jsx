@@ -280,34 +280,10 @@ function OfferProcessSection({ navigate }) {
   }, []);
 
   const steps = [
-    {
-      num: '01',
-      tag: 'Schritt 1',
-      title: 'Erstgespräch',
-      desc: '30 Minuten, kostenlos und unverbindlich. Wir lernen dein Unternehmen kennen — kein Pitch, keine Verpflichtung.',
-      highlight: false,
-    },
-    {
-      num: '02',
-      tag: 'Schritt 2',
-      title: 'Analyse',
-      desc: 'Wir analysieren dein Potenzial, deine Mitbewerber und die optimale Strategie — bevor wir auch nur eine Zahl nennen.',
-      highlight: false,
-    },
-    {
-      num: '03',
-      tag: 'Schritt 3',
-      title: 'Dein Angebot',
-      desc: 'Du bekommst ein maßgeschneidertes Angebot — transparent, fair, ohne versteckte Kosten. Erst hier sprechen wir über Zahlen.',
-      highlight: true,
-    },
-    {
-      num: '04',
-      tag: 'Schritt 4',
-      title: 'Umsetzung',
-      desc: 'Sobald du grünes Licht gibst, legen wir los. Schnell, strukturiert, messbar — mit festen Meilensteinen und direktem Kontakt.',
-      highlight: false,
-    },
+    { num:'01', tag:'Schritt 1', title:'Erstgespräch', desc:'30 Minuten, kostenlos und unverbindlich. Wir lernen dein Unternehmen kennen — kein Pitch, keine Verpflichtung.', highlight:false },
+    { num:'02', tag:'Schritt 2', title:'Analyse', desc:'Wir analysieren dein Potenzial, deine Mitbewerber und die optimale Strategie — bevor wir auch nur eine Zahl nennen.', highlight:false },
+    { num:'03', tag:'Schritt 3', title:'Dein Angebot', desc:'Du bekommst ein maßgeschneidertes Angebot — transparent, fair, ohne versteckte Kosten. Erst hier sprechen wir über Zahlen.', highlight:true },
+    { num:'04', tag:'Schritt 4', title:'Umsetzung', desc:'Sobald du grünes Licht gibst, legen wir los. Schnell, strukturiert, messbar — mit festen Meilensteinen und direktem Kontakt.', highlight:false },
   ];
 
   return (
@@ -315,7 +291,7 @@ function OfferProcessSection({ navigate }) {
       <Reveal><p className="section-label">{ '{ Wie läuft es ab? }' }</p></Reveal>
       <Reveal delay={80}><h2 className="section-h2">Erst das Gespräch.<br/>Dann der Preis.</h2></Reveal>
       <Reveal delay={150}>
-        <p className="body-lg" style={{color:'var(--muted)',textAlign:'center',maxWidth:'560px',margin:'0 auto'}}>
+        <p className="body-lg" style={{color:'var(--muted)',maxWidth:'560px',margin:'1rem 0 0'}}>
           Kein Fixpreis von der Stange. Jedes Projekt ist anders — deshalb bekommst du ein Angebot, das wirklich zu dir passt.
         </p>
       </Reveal>
@@ -434,6 +410,17 @@ function ClosingCTA({ navigate }) {
 
 // ─── Comparison ────────────────────────────────────────────────────────────────
 function ComparisonSection() {
+  React.useEffect(() => {
+    if (document.getElementById('wa-comp-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'wa-comp-styles';
+    s.textContent = `
+      .comp-inner{max-width:860px;margin:0 auto}
+      .comp-note{text-align:center;max-width:660px;margin:2rem auto 0}
+    `;
+    document.head.appendChild(s);
+  }, []);
+
   const rows = [
     { label:'Reaktionszeit',        wa:'24h',         free:'variabel',  big:'1–2 Wochen' },
     { label:'Lieferzeit',           wa:'2–3 Wochen', free:'variabel',  big:'2–3 Monate' },
@@ -444,26 +431,32 @@ function ComparisonSection() {
   ];
   return (
     <section className="section comparison-section">
-      <Reveal><p className="section-label">{ '{ Warum WebArs }' }</p></Reveal>
-      <Reveal delay={80}><h2 className="section-h2" style={{marginBottom:'3rem'}}>Kein Roulette.<br/>Kein Offshore.</h2></Reveal>
+      <Reveal style={{textAlign:'center'}}>
+        <p className="section-label" style={{justifyContent:'center'}}>{ '{ Warum WebArs }' }</p>
+      </Reveal>
+      <Reveal delay={80}>
+        <h2 className="section-h2" style={{textAlign:'center',marginBottom:'3rem'}}>Kein Roulette.<br/>Kein Offshore.</h2>
+      </Reveal>
       <Reveal delay={160}>
-        <div className="comparison-table">
-          <div className="comp-header">
-            <div className="comp-label-col"></div>
-            <div className="comp-col comp-col-wa">WebArs</div>
-            <div className="comp-col">Freelancer</div>
-            <div className="comp-col">Große Agentur</div>
-          </div>
-          {rows.map(r => (
-            <div key={r.label} className="comp-row">
-              <div className="comp-label-col">{r.label}</div>
-              <div className="comp-col comp-col-wa comp-val-wa">{r.wa}</div>
-              <div className="comp-col comp-val">{r.free}</div>
-              <div className="comp-col comp-val">{r.big}</div>
+        <div className="comp-inner">
+          <div className="comparison-table">
+            <div className="comp-header">
+              <div className="comp-label-col"></div>
+              <div className="comp-col comp-col-wa">WebArs</div>
+              <div className="comp-col">Freelancer</div>
+              <div className="comp-col">Große Agentur</div>
             </div>
-          ))}
+            {rows.map(r => (
+              <div key={r.label} className="comp-row">
+                <div className="comp-label-col">{r.label}</div>
+                <div className="comp-col comp-col-wa comp-val-wa">{r.wa}</div>
+                <div className="comp-col comp-val">{r.free}</div>
+                <div className="comp-col comp-val">{r.big}</div>
+              </div>
+            ))}
+          </div>
+          <p className="comp-note">Persönlicher Ansprechpartner in Wien & Frankfurt. Kein anonymes Ticketsystem, keine Offshore-Teams — nur direkte Kommunikation und nachweisbare Ergebnisse.</p>
         </div>
-        <p className="comp-note">Persönlicher Ansprechpartner in Wien & Frankfurt. Kein anonymes Ticketsystem, keine Offshore-Teams — nur direkte Kommunikation und nachweisbare Ergebnisse.</p>
       </Reveal>
     </section>
   );
